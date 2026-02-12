@@ -107,7 +107,7 @@ const PROJECTS_DATA = [
     desc: "A Python-based traffic analysis tool using Tkinter. Reads daily survey data and displays vehicle frequency histograms.",
     tags: ["Python", "Tkinter", "Pandas", "Matplotlib"],
     link: "#",
-    repo: "#"
+    repo: "https://github.com/Ganindu-ui/Python-based-traffic-data-analysis-system.git"
   },
   {
     id: 2,
@@ -123,11 +123,11 @@ const PROJECTS_DATA = [
     id: 3,
     title: "Portfolio 2026",
     date: "Feb 2026",
-    img: "/images/WhatsApp Image 2025-02-22 at 07.03.10_ab0a07d3.jpg",
+    img: "/images/image.png",
     desc: "This advanced React Single Page Application featuring Framer Motion animations and complex state management.",
     tags: ["React", "Vite", "Motion", "CSS Modules"],
-    link: "#",
-    repo: "#"
+    link: "https://ganindu-portfolio.vercel.app/",
+    repo: "https://github.com/Ganindu-ui/ganindu-portfolio.git"
   }
 ];
 
@@ -487,15 +487,15 @@ const AboutSection = () => {
 
           <motion.div variants={VARIANTS.fadeInUp} className="about-stats">
             <div className="stat-item">
-              <span className="stat-number">03+</span>
+              <span className="stat-number">02+</span>
               <span className="stat-label">Years Experience</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">20+</span>
+              <span className="stat-number">5+</span>
               <span className="stat-label">Projects Completed</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">10+</span>
+              <span className="stat-number">3+</span>
               <span className="stat-label">Happy Clients</span>
             </div>
           </motion.div>

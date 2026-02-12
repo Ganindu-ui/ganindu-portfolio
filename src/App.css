@@ -136,6 +136,16 @@
      padding: 0 var(--spacing-sm);
    }
    
+   .app-wrapper {
+     width: 100%;
+     min-height: 100vh;
+     position: relative;
+   }
+   
+   main {
+     width: 100%;
+   }
+   
    .text-primary { color: var(--primary-color); }
    .text-secondary { color: var(--secondary-color); }
    .text-highlight { color: var(--primary-light); }
@@ -144,6 +154,7 @@
    .section-title {
      font-size: 3rem;
      margin-bottom: var(--spacing-sm);
+     text-align: center;
    }
    
    .section-lead {
