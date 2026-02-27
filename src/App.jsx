@@ -123,7 +123,7 @@ const PROJECTS_DATA = [
   {
     id: 3,
     title: "Portfolio 2026",
-    date: "Feb 2026",
+    date: "Jan 2026",
     img: "/images/image.png",
     desc: "This advanced React Single Page Application featuring Framer Motion animations and complex state management.",
     tags: ["React", "Vite", "Motion", "CSS Modules"],
@@ -136,10 +136,21 @@ const PROJECTS_DATA = [
     date: "Feb 2026",
     img: "/images/SmartStock.png",
     desc: "A full-stack inventory management system for tracking stock, managing products, and monitoring real-time inventory updates with an intuitive dashboard.",
+    tags: ["React", "Python", "Supabase", "PostgreSQL"],
+    link: "#",
+    repo: "https://github.com/Ganindu-ui/SmartInventory.git"
+  },
+  {
+    id: 5,
+    title: "Smart Inventory System",
+    date: "Feb 2026",
+    img: "/images/SmartStock.png",
+    desc: "A full-stack inventory management system for tracking stock, managing products, and monitoring real-time inventory updates with an intuitive dashboard.",
     tags: ["React", "Node.js", "Supabase", "PostgreSQL"],
     link: "#",
     repo: "https://github.com/Ganindu-ui/SmartInventory.git"
   }
+
 ];
 
 // ==========================================
