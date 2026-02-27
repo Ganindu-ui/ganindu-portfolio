@@ -129,6 +129,16 @@ const PROJECTS_DATA = [
     tags: ["React", "Vite", "Motion", "CSS Modules"],
     link: "https://ganindu-portfolio.vercel.app/",
     repo: "https://github.com/Ganindu-ui/ganindu-portfolio.git"
+  },
+  {
+    id: 4,
+    title: "Smart Inventory System",
+    date: "Feb 2026",
+    img: "/images/SmartStock.png",
+    desc: "A full-stack inventory management system for tracking stock, managing products, and monitoring real-time inventory updates with an intuitive dashboard.",
+    tags: ["React", "Node.js", "Supabase", "PostgreSQL"],
+    link: "#",
+    repo: "https://github.com/Ganindu-ui/SmartInventory.git"
   }
 ];
 
