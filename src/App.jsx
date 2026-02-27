@@ -1,25 +1,26 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { 
-  motion, 
-  useScroll, 
-  useSpring, 
-  useTransform, 
+import emailjs from '@emailjs/browser';
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
   AnimatePresence,
   useInView
 } from 'framer-motion';
-import { 
-  FaGithub, 
-  FaLinkedin, 
-  FaInstagram, 
-  FaCode, 
-  FaServer, 
-  FaPaintBrush, 
-  FaBrain, 
-  FaMicrochip, 
-  FaUser, 
-  FaRocket, 
-  FaEnvelope, 
-  FaExternalLinkAlt, 
+import {
+  FaGithub,
+  FaLinkedin,
+  FaInstagram,
+  FaCode,
+  FaServer,
+  FaPaintBrush,
+  FaBrain,
+  FaMicrochip,
+  FaUser,
+  FaRocket,
+  FaEnvelope,
+  FaExternalLinkAlt,
   FaPaperPlane,
   FaArrowUp,
   FaDatabase,
@@ -54,45 +55,45 @@ const HERO_DATA = {
 };
 
 const SKILLS_DATA = [
-  { 
-    id: 1, 
-    icon: <FaCode />, 
-    title: "Frontend Architecture", 
+  {
+    id: 1,
+    icon: <FaCode />,
+    title: "Frontend Architecture",
     desc: "Building complex SPAs with React, Redux, and modern CSS frameworks like Tailwind and Bootstrap.",
     level: "90%"
   },
-  { 
-    id: 2, 
-    icon: <FaServer />, 
-    title: "Backend Engineering", 
+  {
+    id: 2,
+    icon: <FaServer />,
+    title: "Backend Engineering",
     desc: "Designing RESTful APIs using Python (Flask/Django) and Node.js. Database management with SQL & NoSQL.",
     level: "85%"
   },
-  { 
-    id: 3, 
-    icon: <FaMicrochip />, 
-    title: "IoT Integration", 
+  {
+    id: 3,
+    icon: <FaMicrochip />,
+    title: "IoT Integration",
     desc: "Bridging the gap between hardware and software using Arduino, Raspberry Pi, and MQTT protocols.",
     level: "80%"
   },
-  { 
-    id: 4, 
-    icon: <FaBrain />, 
-    title: "Algorithmic Logic", 
+  {
+    id: 4,
+    icon: <FaBrain />,
+    title: "Algorithmic Logic",
     desc: "Advanced problem-solving capabilities, data structure optimization, and performance analysis.",
     level: "95%"
   },
-  { 
-    id: 5, 
-    icon: <FaDatabase />, 
-    title: "Database Management", 
+  {
+    id: 5,
+    icon: <FaDatabase />,
+    title: "Database Management",
     desc: "Architecting efficient schemas in PostgreSQL, MySQL, and MongoDB for scalable applications.",
     level: "80%"
   },
-  { 
-    id: 6, 
-    icon: <FaCloud />, 
-    title: "Cloud & DevOps", 
+  {
+    id: 6,
+    icon: <FaCloud />,
+    title: "Cloud & DevOps",
     desc: "Deploying scalable applications using Docker, AWS, and CI/CD pipelines for automated testing.",
     level: "70%"
   }
@@ -148,32 +149,32 @@ const VARIANTS = {
   },
   fadeInUp: {
     hidden: { opacity: 0, y: 40 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { type: "spring", stiffness: 50, damping: 20 }
     }
   },
   fadeInLeft: {
     hidden: { opacity: 0, x: -60 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       x: 0,
       transition: { duration: 0.8, ease: "easeOut" }
     }
   },
   fadeInRight: {
     hidden: { opacity: 0, x: 60 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       x: 0,
       transition: { duration: 0.8, ease: "easeOut" }
     }
   },
   scaleIn: {
     hidden: { opacity: 0, scale: 0.8 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
       transition: { duration: 0.5, ease: "backOut" }
     }
@@ -226,7 +227,7 @@ const SplashScreen = ({ onComplete }) => {
   }, [onComplete]);
 
   return (
-    <motion.div 
+    <motion.div
       className="splash-container"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, filter: "blur(10px)" }}
@@ -240,8 +241,8 @@ const SplashScreen = ({ onComplete }) => {
             </motion.div>
           ))}
         </motion.div>
-        
-        <motion.h1 
+
+        <motion.h1
           className="splash-title"
           initial={{ clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)" }}
           animate={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)" }}
@@ -250,7 +251,7 @@ const SplashScreen = ({ onComplete }) => {
           Ganindu<span className="text-primary">.Dev</span>
         </motion.h1>
 
-        <motion.div 
+        <motion.div
           className="splash-loader"
           initial={{ width: 0 }}
           animate={{ width: "200px" }}
@@ -267,7 +268,7 @@ const CustomCursor = () => {
 
   useEffect(() => {
     const updateMouse = (e) => setMousePos({ x: e.clientX, y: e.clientY });
-    
+
     const handleMouseOver = (e) => {
       if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('.interactive')) {
         setIsHovering(true);
@@ -286,15 +287,15 @@ const CustomCursor = () => {
 
   return (
     <>
-      <motion.div 
+      <motion.div
         className="cursor-dot"
         animate={{ x: mousePos.x, y: mousePos.y }}
         transition={{ type: "tween", duration: 0 }}
       />
-      <motion.div 
+      <motion.div
         className="cursor-outline"
-        animate={{ 
-          x: mousePos.x, 
+        animate={{
+          x: mousePos.x,
           y: mousePos.y,
           width: isHovering ? 60 : 30,
           height: isHovering ? 60 : 30,
@@ -309,7 +310,7 @@ const CustomCursor = () => {
 
 const Navbar = () => {
   return (
-    <motion.nav 
+    <motion.nav
       className="navbar"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -318,10 +319,10 @@ const Navbar = () => {
       <a href="#" className="logo interactive">
         🌟 Ganindu<span className="text-highlight">.Dev</span>
       </a>
-      
+
       <ul className="nav-menu">
         {NAV_LINKS.map((link, i) => (
-          <motion.li 
+          <motion.li
             key={link.id}
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -333,8 +334,8 @@ const Navbar = () => {
           </motion.li>
         ))}
       </ul>
-      
-      <motion.button 
+
+      <motion.button
         className="btn-resume interactive"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -351,7 +352,7 @@ const HeroSection = () => {
   return (
     <section id="home" className="hero-section">
       <div className="container hero-container">
-        <motion.div 
+        <motion.div
           className="hero-content"
           variants={VARIANTS.containerStagger}
           initial="hidden"
@@ -370,7 +371,7 @@ const HeroSection = () => {
             <motion.div variants={VARIANTS.fadeInUp} className="block-reveal">
               {HERO_DATA.title_1}
             </motion.div>
-            <motion.div 
+            <motion.div
               className="gradient-text-wrapper"
               variants={VARIANTS.typingContainer}
             >
@@ -399,8 +400,8 @@ const HeroSection = () => {
             <span className="tech-label">Tech Stack:</span>
             <div className="tech-pills">
               {HERO_DATA.tech_stack.map((tech, i) => (
-                <motion.span 
-                  key={tech} 
+                <motion.span
+                  key={tech}
                   className="tech-pill"
                   whileHover={{ y: -5, backgroundColor: "rgba(168, 85, 247, 0.2)" }}
                 >
@@ -411,7 +412,7 @@ const HeroSection = () => {
           </motion.div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="hero-image-wrapper"
           initial={{ opacity: 0, x: 100, rotateY: -30 }}
           animate={{ opacity: 1, x: 0, rotateY: 0 }}
@@ -421,18 +422,18 @@ const HeroSection = () => {
           <div className="hero-image-card">
             <img src="/images/developer.png" alt="Ganindu" className="hero-img" />
             <div className="hero-glow-effect"></div>
-            
+
             {/* Floating Cards */}
-            <motion.div 
+            <motion.div
               className="float-card float-card-1"
-              animate={{ y: [0, -15, 0] }} 
+              animate={{ y: [0, -15, 0] }}
               transition={{ duration: 4, repeat: Infinity, delay: 1 }}
             >
               <FaCode /> <span>Clean Code</span>
             </motion.div>
-            <motion.div 
+            <motion.div
               className="float-card float-card-2"
-              animate={{ y: [0, 15, 0] }} 
+              animate={{ y: [0, 15, 0] }}
               transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
             >
               <FaRocket /> <span>Fast Performance</span>
@@ -448,7 +449,7 @@ const AboutSection = () => {
   return (
     <section id="about" className="about-section">
       <div className="container about-container">
-        <motion.div 
+        <motion.div
           className="about-image-col"
           initial="hidden"
           whileInView="visible"
@@ -462,7 +463,7 @@ const AboutSection = () => {
           <div className="about-bg-blob"></div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="about-text-col"
           initial="hidden"
           whileInView="visible"
@@ -473,15 +474,15 @@ const AboutSection = () => {
           <motion.h2 variants={VARIANTS.fadeInUp} className="section-title">
             Passionate About <span className="text-primary">Technology</span> & <span className="text-secondary">Innovation</span>
           </motion.h2>
-          
+
           <motion.p variants={VARIANTS.fadeInUp} className="about-desc">
             I’m <span className="highlight">Ganindu Pabasara</span>, a tech enthusiast from Sri Lanka with a deep love for creating digital solutions that matter.
-            My journey began with breaking apart electronic toys to see how they worked, which naturally evolved into a career in 
+            My journey began with breaking apart electronic toys to see how they worked, which naturally evolved into a career in
             <span className="highlight"> Full Stack Development</span> and <span className="highlight">IoT Engineering</span>.
           </motion.p>
-          
+
           <motion.p variants={VARIANTS.fadeInUp} className="about-desc">
-            I believe that code is more than just syntax; it's a tool to solve real-world problems. Whether I'm optimizing a database query 
+            I believe that code is more than just syntax; it's a tool to solve real-world problems. Whether I'm optimizing a database query
             or soldering a sensor to a microcontroller, I bring the same level of dedication and curiosity to every task.
           </motion.p>
 
@@ -509,7 +510,7 @@ const SkillsSection = () => {
   return (
     <section id="skills" className="skills-section">
       <div className="container">
-        <motion.div 
+        <motion.div
           className="section-header text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -519,7 +520,7 @@ const SkillsSection = () => {
           <p className="section-lead">The tools and technologies I use to bring ideas to life.</p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="skills-grid"
           variants={VARIANTS.containerStagger}
           initial="hidden"
@@ -527,12 +528,12 @@ const SkillsSection = () => {
           viewport={{ once: true, amount: 0.1 }}
         >
           {SKILLS_DATA.map((skill) => (
-            <motion.div 
-              key={skill.id} 
+            <motion.div
+              key={skill.id}
               className="skill-card glass-panel interactive"
               variants={VARIANTS.fadeInUp}
-              whileHover={{ 
-                y: -10, 
+              whileHover={{
+                y: -10,
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
                 borderColor: "#a855f7"
               }}
@@ -545,7 +546,7 @@ const SkillsSection = () => {
               <div className="skill-bar-container">
                 <div className="skill-level-label">Proficiency</div>
                 <div className="skill-bar-bg">
-                  <motion.div 
+                  <motion.div
                     className="skill-bar-fill"
                     initial={{ width: 0 }}
                     whileInView={{ width: skill.level }}
@@ -571,7 +572,7 @@ const ProjectsSection = () => {
 
         <div className="projects-grid">
           {PROJECTS_DATA.map((project, index) => (
-            <motion.div 
+            <motion.div
               key={project.id}
               className="project-card interactive"
               initial={{ opacity: 0, scale: 0.9 }}
@@ -608,13 +609,87 @@ const ProjectsSection = () => {
   );
 };
 
+// ─── EmailJS Configuration ────────────────────────────────────────────────
+// Replace the three placeholders below with your real EmailJS credentials:
+//   1. Go to https://www.emailjs.com/ and create a free account
+//   2. Add an Email Service  → copy the Service ID
+//   3. Create an Email Template → copy the Template ID
+//      Template variables to use: {{from_name}}, {{from_email}}, {{subject}}, {{message}}
+//   4. Go to Account → API Keys → copy the Public Key
+const EMAILJS_SERVICE_ID = 'service_beniihq';   
+const EMAILJS_TEMPLATE_ID = 'template_ndkel7c';  
+const EMAILJS_PUBLIC_KEY = 'tD1XU03PmDdGKFaHO';   
+
+const Toast = ({ toast, onDismiss }) => (
+  <AnimatePresence>
+    {toast && (
+      <motion.div
+        className={`toast toast-${toast.type}`}
+        initial={{ opacity: 0, y: 60, scale: 0.9 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 60, scale: 0.9 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+      >
+        <span>{toast.type === 'success' ? '✅' : '❌'}</span>
+        <span>{toast.message}</span>
+        <button className="toast-close" onClick={onDismiss}>×</button>
+      </motion.div>
+    )}
+  </AnimatePresence>
+);
+
 const ContactSection = () => {
+  const formRef = useRef(null);
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [sending, setSending] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (type, message) => {
+    setToast({ type, message });
+    setTimeout(() => setToast(null), 5000);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      showToast('error', 'Please fill in all required fields.');
+      return;
+    }
+    setSending(true);
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: form.name,
+          from_email: form.email,
+          subject: form.subject || 'No Subject',
+          message: form.message,
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+      showToast('success', "Message sent! I'll get back to you soon 🚀");
+      setForm({ name: '', email: '', subject: '', message: '' });
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      showToast('error', 'Oops! Something went wrong. Please try again.');
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
     <section id="contact" className="contact-section">
+      <Toast toast={toast} onDismiss={() => setToast(null)} />
       <div className="container contact-container-inner">
         <div className="contact-bg-glow"></div>
-        
-        <motion.div 
+
+        <motion.div
           className="contact-card glass-panel"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -626,34 +701,75 @@ const ContactSection = () => {
             <p>Have a project in mind or just want to say hi? My inbox is always open.</p>
           </div>
 
-          <form className="contact-form">
+          <form ref={formRef} className="contact-form" onSubmit={handleSubmit} noValidate>
             <div className="form-row">
               <div className="input-group">
-                <label>Your Name</label>
-                <input type="text" placeholder="John Doe" className="interactive" />
+                <label htmlFor="contact-name">Your Name <span className="required">*</span></label>
+                <input
+                  id="contact-name"
+                  type="text"
+                  name="name"
+                  placeholder="John Doe"
+                  className="interactive"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className="input-group">
-                <label>Your Email</label>
-                <input type="email" placeholder="john@example.com" className="interactive" />
+                <label htmlFor="contact-email">Your Email <span className="required">*</span></label>
+                <input
+                  id="contact-email"
+                  type="email"
+                  name="email"
+                  placeholder="john@example.com"
+                  className="interactive"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
               </div>
             </div>
-            
+
             <div className="input-group">
-              <label>Subject</label>
-              <input type="text" placeholder="Project Inquiry" className="interactive" />
+              <label htmlFor="contact-subject">Subject</label>
+              <input
+                id="contact-subject"
+                type="text"
+                name="subject"
+                placeholder="Project Inquiry"
+                className="interactive"
+                value={form.subject}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="input-group">
-              <label>Message</label>
-              <textarea rows="5" placeholder="Tell me about your project..." className="interactive"></textarea>
+              <label htmlFor="contact-message">Message <span className="required">*</span></label>
+              <textarea
+                id="contact-message"
+                name="message"
+                rows="5"
+                placeholder="Tell me about your project..."
+                className="interactive"
+                value={form.message}
+                onChange={handleChange}
+                required
+              ></textarea>
             </div>
 
-            <motion.button 
-              className="btn-submit interactive"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+            <motion.button
+              type="submit"
+              className={`btn-submit interactive${sending ? ' btn-sending' : ''}`}
+              whileHover={sending ? {} : { scale: 1.02 }}
+              whileTap={sending ? {} : { scale: 0.98 }}
+              disabled={sending}
             >
-              Send Message <FaPaperPlane />
+              {sending ? (
+                <><span className="spinner"></span> Sending...</>
+              ) : (
+                <>Send Message <FaPaperPlane /></>
+              )}
             </motion.button>
           </form>
 
@@ -726,7 +842,7 @@ const ScrollToTop = () => {
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.div 
+        <motion.div
           className="scroll-to-top interactive"
           onClick={scrollToTop}
           initial={{ opacity: 0, scale: 0 }}
@@ -760,26 +876,26 @@ function App() {
         {loading ? (
           <SplashScreen key="splash" onComplete={() => setLoading(false)} />
         ) : (
-          <motion.div 
+          <motion.div
             key="main-content"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
             <CustomCursor />
-            
-            <motion.div 
-              className="scroll-progress-bar" 
-              style={{ scaleX }} 
+
+            <motion.div
+              className="scroll-progress-bar"
+              style={{ scaleX }}
             />
-            
+
             {/* Background Particles/Stars would be handled via CSS or a separate Canvas component */}
             <div className="stars-bg"></div>
             <div className="stars-bg-2"></div>
             <div className="stars-bg-3"></div>
 
             <Navbar />
-            
+
             <main>
               <HeroSection />
               <AboutSection />
