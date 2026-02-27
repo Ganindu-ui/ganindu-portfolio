@@ -139,17 +139,8 @@ const PROJECTS_DATA = [
     tags: ["React", "Python", "Supabase", "PostgreSQL"],
     link: "#",
     repo: "https://github.com/Ganindu-ui/SmartInventory.git"
-  },
-  {
-    id: 5,
-    title: "Smart Inventory System",
-    date: "Feb 2026",
-    images: ["/images/SmartStock.png"],
-    desc: "A full-stack inventory management system for tracking stock, managing products, and monitoring real-time inventory updates with an intuitive dashboard.",
-    tags: ["React", "Node.js", "Supabase", "PostgreSQL"],
-    link: "#",
-    repo: "https://github.com/Ganindu-ui/SmartInventory.git"
   }
+
 ];
 
 // ==========================================
