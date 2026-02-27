@@ -104,7 +104,7 @@ const PROJECTS_DATA = [
     id: 1,
     title: "Traffic Data Visualizer",
     date: "Nov 2023",
-    img: "/images/traffic data analyser.png",
+    images: ["/images/traffic data analyser.png"],
     desc: "A Python-based traffic analysis tool using Tkinter. Reads daily survey data and displays vehicle frequency histograms.",
     tags: ["Python", "Tkinter", "Pandas", "Matplotlib"],
     link: "#",
@@ -114,7 +114,7 @@ const PROJECTS_DATA = [
     id: 2,
     title: "Life Below Water",
     date: "Sept 2024",
-    img: "/images/Life Below Water.png",
+    images: ["/images/Life Below Water.png"],
     desc: "A web project inspired by UN Goal 14. Raises awareness about protecting oceans through interactive visuals.",
     tags: ["HTML5", "CSS3", "JS", "GreenSock"],
     link: "#",
@@ -124,7 +124,7 @@ const PROJECTS_DATA = [
     id: 3,
     title: "Portfolio 2026",
     date: "Jan 2026",
-    img: "/images/image.png",
+    images: ["/images/image.png"],
     desc: "This advanced React Single Page Application featuring Framer Motion animations and complex state management.",
     tags: ["React", "Vite", "Motion", "CSS Modules"],
     link: "https://ganindu-portfolio.vercel.app/",
@@ -134,7 +134,7 @@ const PROJECTS_DATA = [
     id: 4,
     title: "Smart Inventory System",
     date: "Feb 2026",
-    img: "/images/SmartStock.png",
+    images: ["/images/SmartStock.png", "/images/SmartStock_2.png"],
     desc: "A full-stack inventory management system for tracking stock, managing products, and monitoring real-time inventory updates with an intuitive dashboard.",
     tags: ["React", "Python", "Supabase", "PostgreSQL"],
     link: "#",
@@ -144,13 +144,12 @@ const PROJECTS_DATA = [
     id: 5,
     title: "Smart Inventory System",
     date: "Feb 2026",
-    img: "/images/SmartStock.png",
+    images: ["/images/SmartStock.png"],
     desc: "A full-stack inventory management system for tracking stock, managing products, and monitoring real-time inventory updates with an intuitive dashboard.",
     tags: ["React", "Node.js", "Supabase", "PostgreSQL"],
     link: "#",
     repo: "https://github.com/Ganindu-ui/SmartInventory.git"
   }
-
 ];
 
 // ==========================================
@@ -583,6 +582,68 @@ const SkillsSection = () => {
   );
 };
 
+const ProjectCard = ({ project, index }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const currentImageIndex = isHovered && project.images.length > 1 ? 1 : 0;
+
+  return (
+    <motion.div
+      className="project-card interactive"
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -10 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="project-image-container">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={project.images[currentImageIndex]}
+            src={project.images[currentImageIndex]}
+            alt={project.title}
+            className="project-img"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          />
+        </AnimatePresence>
+        
+        {project.images.length > 1 && (
+          <div className="project-image-dots">
+            {project.images.map((_, i) => (
+              <div 
+                key={i} 
+                className={`image-dot ${i === currentImageIndex ? 'active' : ''}`}
+              />
+            ))}
+          </div>
+        )}
+
+        <div className="project-overlay">
+          <button className="btn-icon-only"><FaExternalLinkAlt /></button>
+          <button className="btn-icon-only"><FaGithub /></button>
+        </div>
+      </div>
+      <div className="project-content">
+        <div className="project-meta">
+          <span className="project-date">{project.date}</span>
+          <div className="project-tags">
+            {project.tags.slice(0, 3).map(tag => (
+              <span key={tag} className="tiny-tag">#{tag}</span>
+            ))}
+          </div>
+        </div>
+        <h3 className="project-title">{project.title}</h3>
+        <p className="project-desc">{project.desc}</p>
+        <a href={project.link} className="project-link">Read Case Study &rarr;</a>
+      </div>
+    </motion.div>
+  );
+};
+
 const ProjectsSection = () => {
   return (
     <section id="projects" className="projects-section">
@@ -593,36 +654,7 @@ const ProjectsSection = () => {
 
         <div className="projects-grid">
           {PROJECTS_DATA.map((project, index) => (
-            <motion.div
-              key={project.id}
-              className="project-card interactive"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -10 }}
-            >
-              <div className="project-image-container">
-                <img src={project.img} alt={project.title} className="project-img" />
-                <div className="project-overlay">
-                  <button className="btn-icon-only"><FaExternalLinkAlt /></button>
-                  <button className="btn-icon-only"><FaGithub /></button>
-                </div>
-              </div>
-              <div className="project-content">
-                <div className="project-meta">
-                  <span className="project-date">{project.date}</span>
-                  <div className="project-tags">
-                    {project.tags.slice(0, 3).map(tag => (
-                      <span key={tag} className="tiny-tag">#{tag}</span>
-                    ))}
-                  </div>
-                </div>
-                <h3 className="project-title">{project.title}</h3>
-                <p className="project-desc">{project.desc}</p>
-                <a href={project.link} className="project-link">Read Case Study &rarr;</a>
-              </div>
-            </motion.div>
+            <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </div>
       </div>
