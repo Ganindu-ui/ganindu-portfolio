@@ -319,6 +319,22 @@ const CustomCursor = () => {
 };
 
 const Navbar = () => {
+  const [active, setActive] = useState('');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = NAV_LINKS.map(l => document.getElementById(l.id));
+      const scrollY = window.scrollY + 100;
+      let current = '';
+      sections.forEach(sec => {
+        if (sec && sec.offsetTop <= scrollY) current = sec.id;
+      });
+      setActive(current);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <motion.nav
       className="navbar"
@@ -326,31 +342,47 @@ const Navbar = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: "circOut" }}
     >
+      {/* Logo */}
       <a href="#" className="logo interactive">
-        🌟 Ganindu<span className="text-highlight">.Dev</span>
+        <span className="logo-icon">⬡</span>
+        {'Ganindu'}<span className="text-highlight">.dev</span>
       </a>
 
-      <ul className="nav-menu">
-        {NAV_LINKS.map((link, i) => (
-          <motion.li
-            key={link.id}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 + (i * 0.1) }}
-          >
-            <a href={`#${link.id}`} className="nav-link interactive">
-              <span className="nav-number">0{i + 1}.</span> {link.label}
-            </a>
-          </motion.li>
-        ))}
-      </ul>
+      {/* Nav pill container */}
+      <div className="nav-pill-wrap">
+        <ul className="nav-menu">
+          {NAV_LINKS.map((link, i) => (
+            <motion.li
+              key={link.id}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 + i * 0.08 }}
+            >
+              <a
+                href={`#${link.id}`}
+                className={`nav-link interactive${active === link.id ? ' active' : ''}`}
+              >
+                {link.label}
+                {active === link.id && (
+                  <motion.span
+                    className="nav-active-dot"
+                    layoutId="nav-dot"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+              </a>
+            </motion.li>
+          ))}
+        </ul>
+      </div>
 
+      {/* CTA */}
       <motion.button
         className="btn-resume interactive"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        Resume
+        Resume ↗
       </motion.button>
     </motion.nav>
   );
