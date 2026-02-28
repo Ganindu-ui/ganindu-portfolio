@@ -911,11 +911,13 @@ main {
   align-items: center;
   gap: 15px;
   opacity: 0;
+  pointer-events: none;
   transition: 0.3s;
 }
 
 .project-card:hover .project-overlay {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .btn-icon-only {

@@ -134,7 +134,7 @@ const PROJECTS_DATA = [
     id: 4,
     title: "Smart Inventory System",
     date: "Feb 2026",
-    images: ["/images/SmartStock.png", "/images/SmartStock_2.png"],
+    images: ["/images/SmartStock.png", "/images/SmartStock2.png"],
     desc: "A full-stack inventory management system for tracking stock, managing products, and monitoring real-time inventory updates with an intuitive dashboard.",
     tags: ["React", "Python", "Supabase", "PostgreSQL"],
     link: "#",
@@ -311,7 +311,6 @@ const CustomCursor = () => {
           width: isHovering ? 60 : 30,
           height: isHovering ? 60 : 30,
           borderColor: isHovering ? "#ec4899" : "#a855f7",
-          mixBlendMode: isHovering ? "difference" : "normal"
         }}
         transition={{ type: "spring", stiffness: 500, damping: 28 }}
       />
@@ -579,7 +578,7 @@ const ProjectCard = ({ project, index }) => {
 
   return (
     <motion.div
-      className="project-card interactive"
+      className="project-card"
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -589,7 +588,7 @@ const ProjectCard = ({ project, index }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="project-image-container">
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           <motion.img
             key={project.images[currentImageIndex]}
             src={project.images[currentImageIndex]}
@@ -597,26 +596,13 @@ const ProjectCard = ({ project, index }) => {
             className="project-img"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
+            exit={{ opacity: 0, position: 'absolute' }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+            style={{ top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
           />
         </AnimatePresence>
-        
-        {project.images.length > 1 && (
-          <div className="project-image-dots">
-            {project.images.map((_, i) => (
-              <div 
-                key={i} 
-                className={`image-dot ${i === currentImageIndex ? 'active' : ''}`}
-              />
-            ))}
-          </div>
-        )}
 
-        <div className="project-overlay">
-          <button className="btn-icon-only"><FaExternalLinkAlt /></button>
-          <button className="btn-icon-only"><FaGithub /></button>
-        </div>
+        <div className="project-overlay"></div>
       </div>
       <div className="project-content">
         <div className="project-meta">
