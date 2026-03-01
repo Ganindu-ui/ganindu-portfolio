@@ -124,7 +124,7 @@ const PROJECTS_DATA = [
     id: 3,
     title: "Portfolio 2026",
     date: "Jan 2026",
-    images: ["/images/image.png"],
+    images: ["/images/image.png", "/images/portfolio_2.png"],
     desc: "This advanced React Single Page Application featuring Framer Motion animations and complex state management.",
     tags: ["React", "Vite", "Motion", "CSS Modules"],
     link: "https://ganindu-portfolio.vercel.app/",
