@@ -37,6 +37,7 @@ const NAV_LINKS = [
   { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
   { id: 'projects', label: 'Projects' },
+  { id: 'certificates', label: 'Certificates' },
   { id: 'contact', label: 'Contact' }
 ];
 
@@ -100,26 +101,29 @@ const SKILLS_DATA = [
 ];
 
 const PROJECTS_DATA = [
-  {
+
+    {
     id: 1,
-    title: "Traffic Data Visualizer",
-    date: "Nov 2023",
-    images: ["/images/traffic data analyser.png"],
-    desc: "A Python-based traffic analysis tool using Tkinter. Reads daily survey data and displays vehicle frequency histograms.",
-    tags: ["Python", "Tkinter", "Pandas", "Matplotlib"],
+    title: "Smart Inventory System",
+    date: "Feb 2026",
+    images: ["/images/SmartStock.png", "/images/SmartStock2.png"],
+    desc: "A full-stack inventory management system for tracking stock, managing products, and monitoring real-time inventory updates with an intuitive dashboard.",
+    tags: ["React", "Python", "Supabase", "PostgreSQL"],
     link: "#",
-    repo: "https://github.com/Ganindu-ui/Python-based-traffic-data-analysis-system.git"
+    repo: "https://github.com/Ganindu-ui/SmartInventory.git"
   },
+
   {
     id: 2,
-    title: "Life Below Water",
-    date: "Sept 2024",
-    images: ["/images/Life Below Water.png"],
-    desc: "A web project inspired by UN Goal 14. Raises awareness about protecting oceans through interactive visuals.",
-    tags: ["HTML5", "CSS3", "JS", "GreenSock"],
-    link: "#",
-    repo: "#"
+    title: "Liwexa",
+    date: "March 2026",
+    images: ["/images/liwexa_1.png", "/images/liwexa_2.png"],
+    desc: "Liwexa is a collaborative full-stack legal-tech platform for managing and previewing laws and court judgments. I contributed to the frontend development, implementing dynamic search, categorized filtering, and an interactive judgment preview system, while working as part of a team following structured development practices.",
+    tags: ["React", "Python", "Supabase", "PostgreSQL", "Tailwind"],
+    link: "https://liwexa.com",
+    repo: ""
   },
+
   {
     id: 3,
     title: "Portfolio 2026",
@@ -130,17 +134,60 @@ const PROJECTS_DATA = [
     link: "https://ganindu-portfolio.vercel.app/",
     repo: "https://github.com/Ganindu-ui/ganindu-portfolio.git"
   },
+
   {
     id: 4,
-    title: "Smart Inventory System",
-    date: "Feb 2026",
-    images: ["/images/SmartStock.png", "/images/SmartStock2.png"],
-    desc: "A full-stack inventory management system for tracking stock, managing products, and monitoring real-time inventory updates with an intuitive dashboard.",
-    tags: ["React", "Python", "Supabase", "PostgreSQL"],
+    title: "Traffic Data Visualizer",
+    date: "Nov 2023",
+    images: ["/images/traffic data analyser.png"],
+    desc: "A Python-based traffic analysis tool using Tkinter. Reads daily survey data and displays vehicle frequency histograms.",
+    tags: ["Python", "Tkinter", "Pandas", "Matplotlib"],
     link: "#",
-    repo: "https://github.com/Ganindu-ui/SmartInventory.git"
-  }
+    repo: "https://github.com/Ganindu-ui/Python-based-traffic-data-analysis-system.git"
+  },
+  {
+    id: 5,
+    title: "Life Below Water",
+    date: "Sept 2024",
+    images: ["/images/Life Below Water.png"],
+    desc: "A web project inspired by UN Goal 14. Raises awareness about protecting oceans through interactive visuals.",
+    tags: ["HTML5", "CSS3", "JS", "GreenSock"],
+    link: "#",
+    repo: "#"
+  },
 
+];
+
+const CERTIFICATES_DATA = [
+  {
+    id: 1,
+    title: "Python for Beginners",
+    issuer: "University of Moratuwa",
+    date: "April 2025",
+    credentialUrl: "https://open.uom.lk/verify",
+    badge: "/logo/University_of_Moratuwa_logo.png",
+    color: "#a855f7"
+  },
+  {
+    id: 2,
+    title: "CodeBreak 2.0 – Advanced Tier",
+    issuer: "IEEE Computer Society, IIT",
+    date: "2024",
+    credentialUrl: "#",
+    badge: "/logo/iit_logo.png",
+    color: "#ec4899"
+  },
+  {
+    id: 3,
+    title: "Ethical Hacking Workshop",
+    issuer: "EXTRAORDINARY THINKERS (PVT) LTD",
+    date: "2023",
+    credentialUrl: "#",
+    badge: "/logo/Hacker_logo.jpg",
+    color: "#06b6d4"
+  },
+
+  
 ];
 
 // ==========================================
@@ -273,50 +320,6 @@ const SplashScreen = ({ onComplete }) => {
   );
 };
 
-const CustomCursor = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
-
-  useEffect(() => {
-    const updateMouse = (e) => setMousePos({ x: e.clientX, y: e.clientY });
-
-    const handleMouseOver = (e) => {
-      if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('.interactive')) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
-    };
-
-    window.addEventListener('mousemove', updateMouse);
-    window.addEventListener('mouseover', handleMouseOver);
-    return () => {
-      window.removeEventListener('mousemove', updateMouse);
-      window.removeEventListener('mouseover', handleMouseOver);
-    };
-  }, []);
-
-  return (
-    <>
-      <motion.div
-        className="cursor-dot"
-        animate={{ x: mousePos.x, y: mousePos.y }}
-        transition={{ type: "tween", duration: 0 }}
-      />
-      <motion.div
-        className="cursor-outline"
-        animate={{
-          x: mousePos.x,
-          y: mousePos.y,
-          width: isHovering ? 60 : 30,
-          height: isHovering ? 60 : 30,
-          borderColor: isHovering ? "#ec4899" : "#a855f7",
-        }}
-        transition={{ type: "spring", stiffness: 500, damping: 28 }}
-      />
-    </>
-  );
-};
 
 const Navbar = () => {
   const [active, setActive] = useState('');
@@ -671,6 +674,63 @@ const ProjectsSection = () => {
   );
 };
 
+const CertificatesSection = () => {
+  return (
+    <section id="certificates" className="certificates-section">
+      <div className="container">
+        <motion.div
+          className="section-header text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h3 className="section-subtitle">Credentials</h3>
+          <h2 className="section-title">My <span className="text-primary">Certificates</span></h2>
+          <p className="section-lead">Verified certifications in software development and computer science.</p>
+        </motion.div>
+
+        <motion.div
+          className="certs-grid"
+          variants={VARIANTS.containerStagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+        >
+          {CERTIFICATES_DATA.map((cert) => (
+            <motion.a
+              key={cert.id}
+              href={cert.credentialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cert-card glass-panel interactive"
+              variants={VARIANTS.fadeInUp}
+              whileHover={{ y: -8, borderColor: cert.color }}
+              style={{ '--cert-color': cert.color }}
+            >
+              <div className="cert-badge" style={{ background: `${cert.color}22`, color: cert.color }}>
+                {cert.badge.startsWith('/') ? (
+                  <img src={cert.badge} alt={cert.issuer} className="cert-badge-img" />
+                ) : (
+                  <span className="cert-badge-icon">{cert.badge}</span>
+                )}
+              </div>
+              <div className="cert-body">
+                <span className="cert-issuer">{cert.issuer}</span>
+                <h3 className="cert-title">{cert.title}</h3>
+                <div className="cert-footer">
+                  <span className="cert-date">📅 {cert.date}</span>
+                  <span className="cert-verify">View Credential ↗</span>
+                </div>
+              </div>
+              <div className="cert-glow" style={{ background: `radial-gradient(circle at 50% 0%, ${cert.color}33, transparent 70%)` }} />
+            </motion.a>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
 // ─── EmailJS Configuration ────────────────────────────────────────────────
 // Replace the three placeholders below with your real EmailJS credentials:
 //   1. Go to https://www.emailjs.com/ and create a free account
@@ -944,7 +1004,6 @@ function App() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <CustomCursor />
 
             <motion.div
               className="scroll-progress-bar"
@@ -963,6 +1022,7 @@ function App() {
               <AboutSection />
               <SkillsSection />
               <ProjectsSection />
+              <CertificatesSection />
               <ContactSection />
             </main>
 
