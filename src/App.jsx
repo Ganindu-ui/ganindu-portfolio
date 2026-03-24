@@ -102,7 +102,7 @@ const SKILLS_DATA = [
 
 const PROJECTS_DATA = [
 
-    {
+  {
     id: 1,
     title: "Smart Inventory System",
     date: "Feb 2026",
@@ -187,7 +187,7 @@ const CERTIFICATES_DATA = [
     color: "#06b6d4"
   },
 
-  
+
 ];
 
 // ==========================================
@@ -279,42 +279,121 @@ const VARIANTS = {
 // ==========================================
 
 const SplashScreen = ({ onComplete }) => {
+  const [progress, setProgress] = useState(0);
+  const [phase, setPhase] = useState(0); // 0=loading, 1=reveal
+
   useEffect(() => {
-    const timer = setTimeout(onComplete, 2800);
-    return () => clearTimeout(timer);
+    // Animate progress 0→100 over 2.6s
+    const start = performance.now();
+    const duration = 2600;
+    let raf;
+    const tick = (now) => {
+      const elapsed = now - start;
+      const pct = Math.min(100, Math.round((elapsed / duration) * 100));
+      setProgress(pct);
+      if (pct < 100) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        setPhase(1);
+        setTimeout(onComplete, 700);
+      }
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [onComplete]);
+
+  // Code rain characters
+  const rainCols = Array.from({ length: 18 }, (_, i) => i);
+  const codeChars = ['</', '{}', '=>', '[];', 'fn()', 'git', 'npm', '0x1', '&&', '||', 'API', '404', 'SSH', 'JWT', 'AI', 'GPU', 'let', '==='];
 
   return (
     <motion.div
       className="splash-container"
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, filter: "blur(10px)" }}
-      transition={{ duration: 0.8 }}
+      exit={{ opacity: 0, scale: 1.05, filter: "blur(16px)" }}
+      transition={{ duration: 0.7, ease: "easeInOut" }}
     >
+      {/* Code rain background */}
+      <div className="splash-rain" aria-hidden>
+        {rainCols.map((col) => (
+          <motion.div
+            key={col}
+            className="splash-rain-col"
+            style={{ left: `${(col / 18) * 100}%`, animationDelay: `${col * 0.18}s` }}
+          >
+            {Array.from({ length: 10 }, (_, r) => (
+              <span key={r} style={{ animationDelay: `${r * 0.3 + col * 0.1}s` }}>
+                {codeChars[(col + r) % codeChars.length]}
+              </span>
+            ))}
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Center content */}
       <div className="splash-content">
-        <motion.div className="splash-icons-row" variants={VARIANTS.containerStagger} initial="hidden" animate="visible">
-          {[FaCode, FaRocket, FaUser].map((Icon, i) => (
-            <motion.div key={i} className="splash-icon-wrapper" variants={VARIANTS.scaleIn}>
-              <Icon />
-            </motion.div>
-          ))}
+        {/* Glowing orb */}
+        <motion.div
+          className="splash-orb"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{
+            scale: [0, 1.2, 1],
+            opacity: [0, 1, 1],
+            borderRadius: ["50%", "40% 60% 60% 40% / 60% 40% 60% 40%", "50%"]
+          }}
+          transition={{ duration: 1.2, ease: "easeOut", times: [0, 0.6, 1] }}
+        >
+          <div className="splash-orb-inner" />
         </motion.div>
 
+        {/* Name reveal */}
         <motion.h1
           className="splash-title"
-          initial={{ clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)" }}
-          animate={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)" }}
-          transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.8 }}
         >
-          Ganindu<span className="text-primary">.Dev</span>
+          {[...'Ganindu'].map((char, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ delay: 0.9 + i * 0.09, duration: 0.4 }}
+            >{char}</motion.span>
+          ))}
+          <motion.span
+            className="splash-dot-dev"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.7, duration: 0.5 }}
+          >.dev</motion.span>
         </motion.h1>
 
+        {/* Tagline */}
+        <motion.p
+          className="splash-tagline"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.8, duration: 0.6 }}
+        >
+          Full Stack Developer
+        </motion.p>
+
+        {/* Progress bar */}
         <motion.div
-          className="splash-loader"
-          initial={{ width: 0 }}
-          animate={{ width: "200px" }}
-          transition={{ duration: 2, delay: 0.8 }}
-        />
+          className="splash-progress-wrap"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className="splash-progress-bar-bg">
+            <motion.div
+              className="splash-progress-bar-fill"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="splash-progress-pct">{progress}%</span>
+        </motion.div>
       </div>
     </motion.div>
   );
@@ -380,13 +459,15 @@ const Navbar = () => {
       </div>
 
       {/* CTA */}
-      <motion.button
+      <motion.a
+        href="/Ganindu Wickramasinghe_CV.pdf.pdf"
+        download="Ganindu_Wickramasinghe_Resume.pdf"
         className="btn-resume interactive"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        Resume ↗
-      </motion.button>
+        Resume ↓
+      </motion.a>
     </motion.nav>
   );
 };
@@ -738,9 +819,9 @@ const CertificatesSection = () => {
 //   3. Create an Email Template → copy the Template ID
 //      Template variables to use: {{from_name}}, {{from_email}}, {{subject}}, {{message}}
 //   4. Go to Account → API Keys → copy the Public Key
-const EMAILJS_SERVICE_ID = 'service_beniihq';   
-const EMAILJS_TEMPLATE_ID = 'template_ndkel7c';  
-const EMAILJS_PUBLIC_KEY = 'tD1XU03PmDdGKFaHO';   
+const EMAILJS_SERVICE_ID = 'service_beniihq';
+const EMAILJS_TEMPLATE_ID = 'template_ndkel7c';
+const EMAILJS_PUBLIC_KEY = 'tD1XU03PmDdGKFaHO';
 
 const Toast = ({ toast, onDismiss }) => (
   <AnimatePresence>
