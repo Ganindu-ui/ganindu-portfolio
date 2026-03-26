@@ -25,7 +25,8 @@ import {
   FaArrowUp,
   FaDatabase,
   FaMobileAlt,
-  FaCloud
+  FaCloud,
+  FaTimes
 } from 'react-icons/fa';
 import './App.css';
 
@@ -688,7 +689,140 @@ const SkillsSection = () => {
   );
 };
 
-const ProjectCard = ({ project, index }) => {
+// ─── Project Modal ────────────────────────────────────────────────────────────
+const ProjectModal = ({ project, onClose }) => {
+  const [activeImg, setActiveImg] = useState(0);
+
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
+  const hasLink = project.link && project.link !== '#';
+  const hasRepo = project.repo && project.repo !== '#' && project.repo !== '';
+
+  return (
+    <motion.div
+      className="modal-backdrop"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="modal-panel"
+        initial={{ opacity: 0, scale: 0.75, y: 60, rotateX: 10 }}
+        animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+        exit={{ opacity: 0, scale: 0.8, y: 40 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 28 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close Button */}
+        <motion.button
+          className="modal-close modal-close-red"
+          onClick={onClose}
+          whileHover={{ rotate: 90, scale: 1.15 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <span className="modal-close-x">✕</span>
+        </motion.button>
+
+        {/* Image Showcase */}
+        <div className="modal-image-wrap">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={activeImg}
+              src={project.images[activeImg]}
+              alt={project.title}
+              className="modal-main-img"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.35, ease: 'easeInOut' }}
+            />
+          </AnimatePresence>
+          {project.images.length > 1 && (
+            <div className="modal-img-dots">
+              {project.images.map((_, i) => (
+                <motion.button
+                  key={i}
+                  className={`modal-dot${i === activeImg ? ' active' : ''}`}
+                  onClick={() => setActiveImg(i)}
+                  whileHover={{ scale: 1.4 }}
+                  whileTap={{ scale: 0.9 }}
+                />
+              ))}
+            </div>
+          )}
+          <div className="modal-img-shine" />
+        </div>
+
+        {/* Content */}
+        <div className="modal-body">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.4 }}
+          >
+            <div className="modal-meta-row">
+              <span className="modal-date">{project.date}</span>
+              <div className="modal-tags">
+                {project.tags.map(tag => (
+                  <span key={tag} className="modal-tag">#{tag}</span>
+                ))}
+              </div>
+            </div>
+
+            <h2 className="modal-title">{project.title}</h2>
+            <p className="modal-desc">{project.desc}</p>
+
+            {/* Action Buttons */}
+            <div className="modal-actions">
+              {hasRepo && (
+                <motion.a
+                  href={project.repo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="modal-btn modal-btn-github"
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.96 }}
+                >
+                  <FaGithub className="modal-btn-icon" />
+                  View on GitHub
+                </motion.a>
+              )}
+              {hasLink && (
+                <motion.a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="modal-btn modal-btn-live"
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.96 }}
+                >
+                  <FaExternalLinkAlt className="modal-btn-icon" />
+                  Live Site
+                </motion.a>
+              )}
+              {!hasRepo && !hasLink && (
+                <span className="modal-btn-disabled">No links available</span>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// ─── Project Card ─────────────────────────────────────────────────────────────
+const ProjectCard = ({ project, index, onOpen }) => {
   const [isHovered, setIsHovered] = useState(false);
   const currentImageIndex = isHovered && project.images.length > 1 ? 1 : 0;
 
@@ -699,9 +833,11 @@ const ProjectCard = ({ project, index }) => {
       whileInView={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true }}
-      whileHover={{ y: -10 }}
+      whileHover={{ y: -12, boxShadow: '0 25px 60px rgba(168,85,247,0.25)' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onOpen(project)}
+      style={{ cursor: 'pointer' }}
     >
       <div className="project-image-container">
         <AnimatePresence>
@@ -717,8 +853,16 @@ const ProjectCard = ({ project, index }) => {
             style={{ top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
           />
         </AnimatePresence>
-
-        <div className="project-overlay"></div>
+        <div className="project-overlay">
+          <motion.div
+            className="project-click-hint"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={isHovered ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.25 }}
+          >
+            <span>Click to Explore</span>
+          </motion.div>
+        </div>
       </div>
       <div className="project-content">
         <div className="project-meta">
@@ -731,13 +875,13 @@ const ProjectCard = ({ project, index }) => {
         </div>
         <h3 className="project-title">{project.title}</h3>
         <p className="project-desc">{project.desc}</p>
-        <a href={project.link} className="project-link">Read Case Study &rarr;</a>
       </div>
     </motion.div>
   );
 };
 
 const ProjectsSection = () => {
+  const [selectedProject, setSelectedProject] = useState(null);
   return (
     <section id="projects" className="projects-section">
       <div className="container">
@@ -747,10 +891,16 @@ const ProjectsSection = () => {
 
         <div className="projects-grid">
           {PROJECTS_DATA.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+            <ProjectCard key={project.id} project={project} index={index} onOpen={setSelectedProject} />
           ))}
         </div>
       </div>
+
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+        )}
+      </AnimatePresence>
     </section>
   );
 };
