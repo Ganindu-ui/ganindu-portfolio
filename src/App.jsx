@@ -26,12 +26,23 @@ import {
   FaDatabase,
   FaMobileAlt,
   FaCloud,
-  FaTimes
+  FaTimes,
+  FaLock,
+  FaThumbtack,
+  FaBolt,
+  FaCheckCircle,
+  FaCertificate,
+  FaCog,
+  FaLaptopCode,
+  FaTools
 } from 'react-icons/fa';
 import './App.css';
+import { usePortfolio } from './context/PortfolioContext';
+import { AdminDashboard } from './components/admin/AdminDashboard';
+import { AdminAuthModal } from './components/admin/AdminAuthModal';
 
 // ==========================================
-//              DATA SECTION
+//              NAVIGATION DATA
 // ==========================================
 
 const NAV_LINKS = [
@@ -42,176 +53,43 @@ const NAV_LINKS = [
   { id: 'contact', label: 'Contact' }
 ];
 
-const HERO_DATA = {
-  greeting: "Hello, I'm",
-  name: "Ganindu Pabasara",
-  title_1: "Full Stack",
-  title_2: "Developer",
-  description: "Designing Responsive, Innovative, and User-Centric Websites with Seamless Full Stack & IoT Solutions. Transforming complex problems into elegant digital experiences.",
-  tech_stack: ["React", "Javascript", "Node.js", "Tailwind", "Python", "Framer", "Three.js", "MongoDB"],
-  socials: [
-    { icon: FaGithub, url: "https://github.com/Ganindu-ui" },
-    { icon: FaLinkedin, url: "https://www.linkedin.com/in/ganindu-wickramasinghe/" },
-    { icon: FaInstagram, url: "https://www.instagram.com/ganindu_wickramasinghe/" }
-  ]
+// Helper to map skill icon keys to icon components
+const getSkillIcon = (iconKey) => {
+  switch (iconKey) {
+    case 'code':
+      return <FaCode />;
+    case 'server':
+      return <FaServer />;
+    case 'microchip':
+      return <FaMicrochip />;
+    case 'brain':
+      return <FaBrain />;
+    case 'database':
+      return <FaDatabase />;
+    case 'cloud':
+      return <FaCloud />;
+    case 'laptop':
+      return <FaLaptopCode />;
+    case 'tools':
+      return <FaTools />;
+    default:
+      return <FaCode />;
+  }
 };
 
-const SKILLS_DATA = [
-  {
-    id: 1,
-    icon: <FaCode />,
-    title: "Frontend Architecture",
-    desc: "Building complex SPAs with React, Redux, and modern CSS frameworks like Tailwind and Bootstrap.",
-    level: "90%"
-  },
-  {
-    id: 2,
-    icon: <FaServer />,
-    title: "Backend Engineering",
-    desc: "Designing RESTful APIs using Python (Flask/Django) and Node.js. Database management with SQL & NoSQL.",
-    level: "85%"
-  },
-  {
-    id: 3,
-    icon: <FaMicrochip />,
-    title: "IoT Integration",
-    desc: "Bridging the gap between hardware and software using Arduino, Raspberry Pi, and MQTT protocols.",
-    level: "80%"
-  },
-  {
-    id: 4,
-    icon: <FaBrain />,
-    title: "Algorithmic Logic",
-    desc: "Advanced problem-solving capabilities, data structure optimization, and performance analysis.",
-    level: "95%"
-  },
-  {
-    id: 5,
-    icon: <FaDatabase />,
-    title: "Database Management",
-    desc: "Architecting efficient schemas in PostgreSQL, MySQL, and MongoDB for scalable applications.",
-    level: "80%"
-  },
-  {
-    id: 6,
-    icon: <FaCloud />,
-    title: "Cloud & DevOps",
-    desc: "Deploying scalable applications using Docker, AWS, and CI/CD pipelines for automated testing.",
-    level: "70%"
+// Helper to map social ID to icon
+const getSocialIcon = (id) => {
+  switch (id) {
+    case 'github':
+      return FaGithub;
+    case 'linkedin':
+      return FaLinkedin;
+    case 'instagram':
+      return FaInstagram;
+    default:
+      return FaExternalLinkAlt;
   }
-];
-
-const PROJECTS_DATA = [
-
-  {
-    id: 1,
-    title: "Smart Inventory System",
-    date: "Feb 2026",
-    images: ["/images/SmartStock.png", "/images/SmartStock2.png"],
-    desc: "A full-stack inventory management system for tracking stock, managing products, and monitoring real-time inventory updates with an intuitive dashboard.",
-    tags: ["React", "Python", "Supabase", "PostgreSQL"],
-    link: "#",
-    repo: "https://github.com/Ganindu-ui/SmartInventory.git"
-  },
-
-  {
-    id: 2,
-    title: "Liwexa",
-    date: "March 2026",
-    images: ["/images/liwexa_1.png", "/images/liwexa_2.png"],
-    desc: "Liwexa is a collaborative full-stack legal-tech platform for managing and previewing laws and court judgments. I contributed to the frontend development, implementing dynamic search, categorized filtering, and an interactive judgment preview system, while working as part of a team following structured development practices.",
-    tags: ["React", "Python", "Supabase", "PostgreSQL", "Tailwind"],
-    link: "https://liwexa.com",
-    repo: ""
-  },
-
-  {
-    id: 3,
-    title: "Portfolio 2026",
-    date: "Jan 2026",
-    images: ["/images/image.png", "/images/portfolio_2.png"],
-    desc: "This advanced React Single Page Application featuring Framer Motion animations and complex state management.",
-    tags: ["React", "Vite", "Motion", "CSS Modules"],
-    link: "https://ganindu-portfolio.vercel.app/",
-    repo: "https://github.com/Ganindu-ui/ganindu-portfolio.git"
-  },
-
-  {
-    id: 4,
-    title: "Traffic Data Visualizer",
-    date: "Nov 2023",
-    images: ["/images/traffic data analyser.png"],
-    desc: "A Python-based traffic analysis tool using Tkinter. Reads daily survey data and displays vehicle frequency histograms.",
-    tags: ["Python", "Tkinter", "Pandas", "Matplotlib"],
-    link: "#",
-    repo: "https://github.com/Ganindu-ui/Python-based-traffic-data-analysis-system.git"
-  },
-  {
-    id: 5,
-    title: "Life Below Water",
-    date: "Sept 2024",
-    images: ["/images/Life Below Water.png"],
-    desc: "A web project inspired by UN Goal 14. Raises awareness about protecting oceans through interactive visuals.",
-    tags: ["HTML5", "CSS3", "JS", "GreenSock"],
-    link: "#",
-    repo: "#"
-  },
-
-  {
-    id: 6,
-    title: "Success Club Booking System",
-    date: "Sept 2026",
-    images: ["/images/booking_system_1.png", "/images/booking_system_2.png"],
-    desc: "A production-grade consultation booking platform built for Dr. Malalasekera (Success Club), embedded into the clinic's WordPress website. Guides clients through a 5-step flow — service selection, real-time availability, intake details, PayHere payment and confirmation — with automated Email/WhatsApp/SMS notifications, two-way Google Calendar sync, and a secure admin dashboard for managing services, availability, bookings and payments.",
-    tags: ["React", "Node.js", "TypeScript", "Express", "Prisma", "MySQL", "PayHere", "Google Calendar API", "Twilio", "Tailwind"],
-    link: "#",
-    repo: "https://github.com/Ganindu-ui/Dr.-Malalasekera-Bokking-System.git"
-  },
-
-  {
-    id: 7,
-    title: "The Sapphire Story",
-    date: "Sept 2026",
-    images: ["/images/ceyblu_web.png", "/images/ceyblu_gems.png"],
-    desc: "A complete e-commerce platform for a Sri Lankan sapphire and gemstone business, built in two weeks with client-approved UI. Next.js luxury storefront (catalog with filtering, cart & checkout, custom gem inquiries, wishlist, order tracking) backed by a Laravel 12 REST API with Sanctum auth and MySQL, plus a staff-only React/Redux ERP covering inventory, sales, HR, finance and reports with QR/barcode scanning, PDF invoicing and Excel exports — all shipped through GitHub Actions CI/CD to cPanel.",
-    tags: ["Next.js", "Laravel", "React", "TypeScript", "MySQL", "Redux Toolkit", "Tailwind", "Sanctum", "GitHub Actions"],
-    link: "https://thesapphirestory.com",
-    repo: "https://github.com/Ganindu-ui/CeyBlu-Gem-Site.git"
-  },
-
-];
-
-const CERTIFICATES_DATA = [
-  {
-    id: 1,
-    title: "Python for Beginners",
-    issuer: "University of Moratuwa",
-    date: "April 2025",
-    credentialUrl: "https://open.uom.lk/verify",
-    badge: "/logo/University_of_Moratuwa_logo.png",
-    color: "#a855f7"
-  },
-  {
-    id: 2,
-    title: "CodeBreak 2.0 – Advanced Tier",
-    issuer: "IEEE Computer Society, IIT",
-    date: "2024",
-    credentialUrl: "#",
-    badge: "/logo/iit_logo.png",
-    color: "#ec4899"
-  },
-  {
-    id: 3,
-    title: "Ethical Hacking Workshop",
-    issuer: "EXTRAORDINARY THINKERS (PVT) LTD",
-    date: "2023",
-    credentialUrl: "#",
-    badge: "/logo/Hacker_logo.jpg",
-    color: "#06b6d4"
-  },
-
-
-];
+};
 
 // ==========================================
 //           ANIMATION VARIANTS
@@ -233,7 +111,7 @@ const VARIANTS = {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: "spring", stiffness: 50, damping: 20 }
+      transition: { type: 'spring', stiffness: 50, damping: 20 }
     }
   },
   fadeInLeft: {
@@ -241,7 +119,7 @@ const VARIANTS = {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.8, ease: "easeOut" }
+      transition: { duration: 0.8, ease: 'easeOut' }
     }
   },
   fadeInRight: {
@@ -249,7 +127,7 @@ const VARIANTS = {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.8, ease: "easeOut" }
+      transition: { duration: 0.8, ease: 'easeOut' }
     }
   },
   scaleIn: {
@@ -257,7 +135,7 @@ const VARIANTS = {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.5, ease: "backOut" }
+      transition: { duration: 0.5, ease: 'backOut' }
     }
   },
   float: {
@@ -267,16 +145,16 @@ const VARIANTS = {
       transition: {
         duration: 5,
         repeat: Infinity,
-        ease: "easeInOut"
+        ease: 'easeInOut'
       }
     }
   },
   pulseGlow: {
     animate: {
       boxShadow: [
-        "0 0 0px rgba(168, 85, 247, 0)",
-        "0 0 20px rgba(168, 85, 247, 0.5)",
-        "0 0 0px rgba(168, 85, 247, 0)"
+        '0 0 0px rgba(168, 85, 247, 0)',
+        '0 0 20px rgba(168, 85, 247, 0.5)',
+        '0 0 0px rgba(168, 85, 247, 0)'
       ],
       transition: {
         duration: 2,
@@ -303,10 +181,8 @@ const VARIANTS = {
 
 const SplashScreen = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState(0); // 0=loading, 1=reveal
 
   useEffect(() => {
-    // Animate progress 0→100 over 2.6s
     const start = performance.now();
     const duration = 2600;
     let raf;
@@ -317,7 +193,6 @@ const SplashScreen = ({ onComplete }) => {
       if (pct < 100) {
         raf = requestAnimationFrame(tick);
       } else {
-        setPhase(1);
         setTimeout(onComplete, 700);
       }
     };
@@ -325,7 +200,6 @@ const SplashScreen = ({ onComplete }) => {
     return () => cancelAnimationFrame(raf);
   }, [onComplete]);
 
-  // Code rain characters
   const rainCols = Array.from({ length: 18 }, (_, i) => i);
   const codeChars = ['</', '{}', '=>', '[];', 'fn()', 'git', 'npm', '0x1', '&&', '||', 'API', '404', 'SSH', 'JWT', 'AI', 'GPU', 'let', '==='];
 
@@ -333,10 +207,9 @@ const SplashScreen = ({ onComplete }) => {
     <motion.div
       className="splash-container"
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, scale: 1.05, filter: "blur(16px)" }}
-      transition={{ duration: 0.7, ease: "easeInOut" }}
+      exit={{ opacity: 0, scale: 1.05, filter: 'blur(16px)' }}
+      transition={{ duration: 0.7, ease: 'easeInOut' }}
     >
-      {/* Code rain background */}
       <div className="splash-rain" aria-hidden>
         {rainCols.map((col) => (
           <motion.div
@@ -353,23 +226,20 @@ const SplashScreen = ({ onComplete }) => {
         ))}
       </div>
 
-      {/* Center content */}
       <div className="splash-content">
-        {/* Glowing orb */}
         <motion.div
           className="splash-orb"
           initial={{ scale: 0, opacity: 0 }}
           animate={{
             scale: [0, 1.2, 1],
             opacity: [0, 1, 1],
-            borderRadius: ["50%", "40% 60% 60% 40% / 60% 40% 60% 40%", "50%"]
+            borderRadius: ['50%', '40% 60% 60% 40% / 60% 40% 60% 40%', '50%']
           }}
-          transition={{ duration: 1.2, ease: "easeOut", times: [0, 0.6, 1] }}
+          transition={{ duration: 1.2, ease: 'easeOut', times: [0, 0.6, 1] }}
         >
           <div className="splash-orb-inner" />
         </motion.div>
 
-        {/* Name reveal */}
         <motion.h1
           className="splash-title"
           initial={{ opacity: 0, y: 30 }}
@@ -382,17 +252,20 @@ const SplashScreen = ({ onComplete }) => {
               initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ delay: 0.9 + i * 0.09, duration: 0.4 }}
-            >{char}</motion.span>
+            >
+              {char}
+            </motion.span>
           ))}
           <motion.span
             className="splash-dot-dev"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.7, duration: 0.5 }}
-          >.dev</motion.span>
+          >
+            .dev
+          </motion.span>
         </motion.h1>
 
-        {/* Tagline */}
         <motion.p
           className="splash-tagline"
           initial={{ opacity: 0 }}
@@ -402,7 +275,6 @@ const SplashScreen = ({ onComplete }) => {
           Full Stack Developer
         </motion.p>
 
-        {/* Progress bar */}
         <motion.div
           className="splash-progress-wrap"
           initial={{ opacity: 0 }}
@@ -422,16 +294,20 @@ const SplashScreen = ({ onComplete }) => {
   );
 };
 
-
-const Navbar = () => {
+// ─── Navbar ──────────────────────────────────────────────────────────────────
+const Navbar = ({ onOpenAdmin }) => {
   const [active, setActive] = useState('');
+  const [logoClicks, setLogoClicks] = useState(0);
+  const logoTimerRef = useRef(null);
+  const { data } = usePortfolio();
+  const hero = data.hero || {};
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = NAV_LINKS.map(l => document.getElementById(l.id));
+      const sections = NAV_LINKS.map((l) => document.getElementById(l.id));
       const scrollY = window.scrollY + 100;
       let current = '';
-      sections.forEach(sec => {
+      sections.forEach((sec) => {
         if (sec && sec.offsetTop <= scrollY) current = sec.id;
       });
       setActive(current);
@@ -440,20 +316,36 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleSecretLogoClick = (e) => {
+    setLogoClicks((prev) => {
+      const updated = prev + 1;
+      if (updated >= 3) {
+        e.preventDefault();
+        onOpenAdmin();
+        return 0;
+      }
+      return updated;
+    });
+
+    if (logoTimerRef.current) clearTimeout(logoTimerRef.current);
+    logoTimerRef.current = setTimeout(() => {
+      setLogoClicks(0);
+    }, 1200);
+  };
+
   return (
     <motion.nav
       className="navbar"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: "circOut" }}
+      transition={{ duration: 0.8, ease: 'circOut' }}
     >
-      {/* Logo */}
-      <a href="#" className="logo interactive">
+      <a href="#" className="logo interactive" onClick={handleSecretLogoClick}>
         <span className="logo-icon">⬡</span>
-        {'Ganindu'}<span className="text-highlight">.dev</span>
+        {hero.name ? hero.name.split(' ')[0] : 'Ganindu'}
+        <span className="text-highlight">.dev</span>
       </a>
 
-      {/* Nav pill container */}
       <div className="nav-pill-wrap">
         <ul className="nav-menu">
           {NAV_LINKS.map((link, i) => (
@@ -481,22 +373,26 @@ const Navbar = () => {
         </ul>
       </div>
 
-      {/* CTA */}
-      <motion.a
-        href="/Ganindu Wickramasinghe_CV.pdf.pdf"
-        download="Ganindu_Wickramasinghe_Resume.pdf"
-        className="btn-resume interactive"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        Resume ↓
-      </motion.a>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+        <motion.a
+          href={hero.resumeUrl || '/Ganindu Wickramasinghe_CV.pdf.pdf'}
+          download={hero.resumeFileName || 'Ganindu_Wickramasinghe_Resume.pdf'}
+          className="btn-resume interactive"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Resume ↓
+        </motion.a>
+      </div>
     </motion.nav>
   );
 };
 
+// ─── Hero Section ────────────────────────────────────────────────────────────
 const HeroSection = () => {
-  const titleLetters = HERO_DATA.title_2.split("");
+  const { data } = usePortfolio();
+  const hero = data.hero || {};
+  const titleLetters = (hero.title_2 || 'Developer').split('');
 
   return (
     <section id="home" className="hero-section">
@@ -509,21 +405,19 @@ const HeroSection = () => {
         >
           <motion.div className="status-badge" variants={VARIANTS.fadeInUp}>
             <span className="pulse-dot"></span>
-            Ready to Innovate
+            {hero.statusBadge || 'Ready to Innovate'}
           </motion.div>
 
           <motion.h2 variants={VARIANTS.fadeInUp} className="hero-greeting">
-            {HERO_DATA.greeting} <span className="text-highlight">{HERO_DATA.name}</span>
+            {hero.greeting || "Hello, I'm"}{' '}
+            <span className="text-highlight">{hero.name || 'Ganindu Pabasara'}</span>
           </motion.h2>
 
           <h1 className="hero-title">
             <motion.div variants={VARIANTS.fadeInUp} className="block-reveal">
-              {HERO_DATA.title_1}
+              {hero.title_1 || 'Full Stack'}
             </motion.div>
-            <motion.div
-              className="gradient-text-wrapper"
-              variants={VARIANTS.typingContainer}
-            >
+            <motion.div className="gradient-text-wrapper" variants={VARIANTS.typingContainer}>
               {titleLetters.map((char, index) => (
                 <motion.span key={index} variants={VARIANTS.typingLetter} className="gradient-char">
                   {char}
@@ -533,7 +427,7 @@ const HeroSection = () => {
           </h1>
 
           <motion.p variants={VARIANTS.fadeInUp} className="hero-description">
-            {HERO_DATA.description}
+            {hero.description}
           </motion.p>
 
           <motion.div variants={VARIANTS.fadeInUp} className="hero-actions">
@@ -545,20 +439,22 @@ const HeroSection = () => {
             </a>
           </motion.div>
 
-          <motion.div variants={VARIANTS.fadeInUp} className="tech-stack-row">
-            <span className="tech-label">Tech Stack:</span>
-            <div className="tech-pills">
-              {HERO_DATA.tech_stack.map((tech, i) => (
-                <motion.span
-                  key={tech}
-                  className="tech-pill"
-                  whileHover={{ y: -5, backgroundColor: "rgba(168, 85, 247, 0.2)" }}
-                >
-                  {tech}
-                </motion.span>
-              ))}
-            </div>
-          </motion.div>
+          {hero.tech_stack && hero.tech_stack.length > 0 && (
+            <motion.div variants={VARIANTS.fadeInUp} className="tech-stack-row">
+              <span className="tech-label">Tech Stack:</span>
+              <div className="tech-pills">
+                {hero.tech_stack.map((tech) => (
+                  <motion.span
+                    key={tech}
+                    className="tech-pill"
+                    whileHover={{ y: -5, backgroundColor: 'rgba(168, 85, 247, 0.2)' }}
+                  >
+                    {tech}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
+          )}
         </motion.div>
 
         <motion.div
@@ -569,10 +465,13 @@ const HeroSection = () => {
           variants={VARIANTS.float}
         >
           <div className="hero-image-card">
-            <img src="/images/developer.png" alt="Ganindu" className="hero-img" />
+            <img
+              src={hero.avatar || '/images/developer.png'}
+              alt={hero.name}
+              className="hero-img"
+            />
             <div className="hero-glow-effect"></div>
 
-            {/* Floating Cards */}
             <motion.div
               className="float-card float-card-1"
               animate={{ y: [0, -15, 0] }}
@@ -594,7 +493,11 @@ const HeroSection = () => {
   );
 };
 
+// ─── About Section ───────────────────────────────────────────────────────────
 const AboutSection = () => {
+  const { data } = usePortfolio();
+  const about = data.about || {};
+
   return (
     <section id="about" className="about-section">
       <div className="container about-container">
@@ -606,8 +509,10 @@ const AboutSection = () => {
           variants={VARIANTS.fadeInLeft}
         >
           <div className="about-polaroid">
-            <img src="/images/me.jpg" alt="About Ganindu" />
-            <div className="polaroid-caption">Working on the Next Big Thing 🚀</div>
+            <img src={about.image || '/images/me.jpg'} alt={about.title} />
+            <div className="polaroid-caption">
+              {about.caption || 'Working on the Next Big Thing 🚀'}
+            </div>
           </div>
           <div className="about-bg-blob"></div>
         </motion.div>
@@ -619,43 +524,46 @@ const AboutSection = () => {
           viewport={{ once: true, amount: 0.4 }}
           variants={VARIANTS.containerStagger}
         >
-          <motion.h3 variants={VARIANTS.fadeInUp} className="section-subtitle">Who I Am</motion.h3>
+          <motion.h3 variants={VARIANTS.fadeInUp} className="section-subtitle">
+            {about.subtitle || 'Who I Am'}
+          </motion.h3>
           <motion.h2 variants={VARIANTS.fadeInUp} className="section-title">
-            Passionate About <span className="text-primary">Technology</span> & <span className="text-secondary">Innovation</span>
+            {about.title || 'Passionate About Technology & Innovation'}
           </motion.h2>
 
-          <motion.p variants={VARIANTS.fadeInUp} className="about-desc">
-            I’m <span className="highlight">Ganindu Pabasara</span>, a tech enthusiast from Sri Lanka with a deep love for creating digital solutions that matter.
-            My journey began with breaking apart electronic toys to see how they worked, which naturally evolved into a career in
-            <span className="highlight"> Full Stack Development</span> and <span className="highlight">IoT Engineering</span>.
-          </motion.p>
+          {about.desc_1 && (
+            <motion.p variants={VARIANTS.fadeInUp} className="about-desc">
+              {about.desc_1}
+            </motion.p>
+          )}
 
-          <motion.p variants={VARIANTS.fadeInUp} className="about-desc">
-            I believe that code is more than just syntax; it's a tool to solve real-world problems. Whether I'm optimizing a database query
-            or soldering a sensor to a microcontroller, I bring the same level of dedication and curiosity to every task.
-          </motion.p>
+          {about.desc_2 && (
+            <motion.p variants={VARIANTS.fadeInUp} className="about-desc">
+              {about.desc_2}
+            </motion.p>
+          )}
 
-          <motion.div variants={VARIANTS.fadeInUp} className="about-stats">
-            <div className="stat-item">
-              <span className="stat-number">02+</span>
-              <span className="stat-label">Years Experience</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-number">7+</span>
-              <span className="stat-label">Projects Completed</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-number">3+</span>
-              <span className="stat-label">Happy Clients</span>
-            </div>
-          </motion.div>
+          {about.stats && about.stats.length > 0 && (
+            <motion.div variants={VARIANTS.fadeInUp} className="about-stats">
+              {about.stats.map((st, i) => (
+                <div key={st.id || i} className="stat-item">
+                  <span className="stat-number">{st.number}</span>
+                  <span className="stat-label">{st.label}</span>
+                </div>
+              ))}
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </section>
   );
 };
 
+// ─── Skills Section ──────────────────────────────────────────────────────────
 const SkillsSection = () => {
+  const { data } = usePortfolio();
+  const skills = data.skills || [];
+
   return (
     <section id="skills" className="skills-section">
       <div className="container">
@@ -665,7 +573,9 @@ const SkillsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="section-title">My Technical <span className="text-primary">Arsenal</span></h2>
+          <h2 className="section-title">
+            My Technical <span className="text-primary">Arsenal</span>
+          </h2>
           <p className="section-lead">The tools and technologies I use to bring ideas to life.</p>
         </motion.div>
 
@@ -676,30 +586,31 @@ const SkillsSection = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
         >
-          {SKILLS_DATA.map((skill) => (
+          {skills.map((skill) => (
             <motion.div
               key={skill.id}
               className="skill-card glass-panel interactive"
               variants={VARIANTS.fadeInUp}
               whileHover={{
                 y: -10,
-                backgroundColor: "rgba(255, 255, 255, 0.05)",
-                borderColor: "#a855f7"
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                borderColor: '#a855f7'
               }}
             >
-              <div className="skill-icon-wrapper">
-                {skill.icon}
-              </div>
+              <div className="skill-icon-wrapper">{getSkillIcon(skill.icon)}</div>
               <h3 className="skill-title">{skill.title}</h3>
               <p className="skill-desc">{skill.desc}</p>
               <div className="skill-bar-container">
-                <div className="skill-level-label">Proficiency</div>
+                <div className="skill-level-label">
+                  <span>{skill.category || 'Proficiency'}</span>
+                  <span style={{ color: '#d8b4fe', fontWeight: 600 }}>{skill.level}</span>
+                </div>
                 <div className="skill-bar-bg">
                   <motion.div
                     className="skill-bar-fill"
                     initial={{ width: 0 }}
                     whileInView={{ width: skill.level }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
+                    transition={{ duration: 1.5, ease: 'easeOut' }}
                   />
                 </div>
               </div>
@@ -716,7 +627,9 @@ const ProjectModal = ({ project, onClose }) => {
   const [activeImg, setActiveImg] = useState(0);
 
   useEffect(() => {
-    const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
+    const handleKey = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
     document.addEventListener('keydown', handleKey);
     document.body.style.overflow = 'hidden';
     return () => {
@@ -725,6 +638,7 @@ const ProjectModal = ({ project, onClose }) => {
     };
   }, [onClose]);
 
+  const images = Array.isArray(project.images) && project.images.length > 0 ? project.images : ['/images/image.png'];
   const hasLink = project.link && project.link !== '#';
   const hasRepo = project.repo && project.repo !== '#' && project.repo !== '';
 
@@ -745,7 +659,6 @@ const ProjectModal = ({ project, onClose }) => {
         transition={{ type: 'spring', stiffness: 260, damping: 28 }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
         <motion.button
           className="modal-close modal-close-red"
           onClick={onClose}
@@ -755,12 +668,11 @@ const ProjectModal = ({ project, onClose }) => {
           <span className="modal-close-x">✕</span>
         </motion.button>
 
-        {/* Image Showcase */}
         <div className="modal-image-wrap">
           <AnimatePresence mode="wait">
             <motion.img
               key={activeImg}
-              src={project.images[activeImg]}
+              src={images[activeImg] || images[0]}
               alt={project.title}
               className="modal-main-img"
               initial={{ opacity: 0, x: 30 }}
@@ -769,9 +681,10 @@ const ProjectModal = ({ project, onClose }) => {
               transition={{ duration: 0.35, ease: 'easeInOut' }}
             />
           </AnimatePresence>
-          {project.images.length > 1 && (
+
+          {images.length > 1 && (
             <div className="modal-img-dots">
-              {project.images.map((_, i) => (
+              {images.map((_, i) => (
                 <motion.button
                   key={i}
                   className={`modal-dot${i === activeImg ? ' active' : ''}`}
@@ -785,26 +698,45 @@ const ProjectModal = ({ project, onClose }) => {
           <div className="modal-img-shine" />
         </div>
 
-        {/* Content */}
         <div className="modal-body">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.4 }}
           >
-            <div className="modal-meta-row">
-              <span className="modal-date">{project.date}</span>
-              <div className="modal-tags">
-                {project.tags.map(tag => (
-                  <span key={tag} className="modal-tag">#{tag}</span>
-                ))}
+            <div className="modal-meta-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.6rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                <span className="modal-date">{project.date}</span>
+                {project.status === 'ongoing' ? (
+                  <span className="badge-ongoing" style={{ fontSize: '0.72rem' }}>
+                    <FaBolt /> Ongoing Project
+                  </span>
+                ) : (
+                  <span className="badge-completed" style={{ fontSize: '0.72rem' }}>
+                    <FaCheckCircle /> Completed
+                  </span>
+                )}
+                {project.isPinned && (
+                  <span className="badge-pinned" style={{ fontSize: '0.72rem' }}>
+                    📌 Pinned
+                  </span>
+                )}
               </div>
+
+              {project.tags && (
+                <div className="modal-tags">
+                  {project.tags.map((tag) => (
+                    <span key={tag} className="modal-tag">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
 
             <h2 className="modal-title">{project.title}</h2>
             <p className="modal-desc">{project.desc}</p>
 
-            {/* Action Buttons */}
             <div className="modal-actions">
               {hasRepo && (
                 <motion.a
@@ -833,7 +765,7 @@ const ProjectModal = ({ project, onClose }) => {
                 </motion.a>
               )}
               {!hasRepo && !hasLink && (
-                <span className="modal-btn-disabled">No links available</span>
+                <span className="modal-btn-disabled">No external links</span>
               )}
             </div>
           </motion.div>
@@ -846,7 +778,8 @@ const ProjectModal = ({ project, onClose }) => {
 // ─── Project Card ─────────────────────────────────────────────────────────────
 const ProjectCard = ({ project, index, onOpen }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const currentImageIndex = isHovered && project.images.length > 1 ? 1 : 0;
+  const images = Array.isArray(project.images) && project.images.length > 0 ? project.images : ['/images/image.png'];
+  const currentImageIndex = isHovered && images.length > 1 ? 1 : 0;
 
   return (
     <motion.div
@@ -855,17 +788,31 @@ const ProjectCard = ({ project, index, onOpen }) => {
       whileInView={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true }}
-      whileHover={{ y: -12, boxShadow: '0 25px 60px rgba(168,85,247,0.25)' }}
+      whileHover={{ y: -12, boxShadow: '0 25px 60px rgba(168,85,247,0.28)' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onOpen(project)}
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: 'pointer', position: 'relative' }}
     >
+      {/* Dynamic Project Card Badges (Ongoing & Pinned) */}
+      <div className="project-card-badges">
+        {project.status === 'ongoing' && (
+          <span className="portfolio-ongoing-badge" title="Project is currently in progress">
+            <FaBolt /> Ongoing
+          </span>
+        )}
+        {project.isPinned && (
+          <span className="portfolio-pinned-badge" title="Pinned Highlight">
+            <FaThumbtack /> Pinned
+          </span>
+        )}
+      </div>
+
       <div className="project-image-container">
         <AnimatePresence>
           <motion.img
-            key={project.images[currentImageIndex]}
-            src={project.images[currentImageIndex]}
+            key={images[currentImageIndex]}
+            src={images[currentImageIndex]}
             alt={project.title}
             className="project-img"
             initial={{ opacity: 0 }}
@@ -886,13 +833,17 @@ const ProjectCard = ({ project, index, onOpen }) => {
           </motion.div>
         </div>
       </div>
+
       <div className="project-content">
         <div className="project-meta">
           <span className="project-date">{project.date}</span>
           <div className="project-tags">
-            {project.tags.slice(0, 3).map(tag => (
-              <span key={tag} className="tiny-tag">#{tag}</span>
-            ))}
+            {project.tags &&
+              project.tags.slice(0, 3).map((tag) => (
+                <span key={tag} className="tiny-tag">
+                  #{tag}
+                </span>
+              ))}
           </div>
         </div>
         <h3 className="project-title">{project.title}</h3>
@@ -902,18 +853,85 @@ const ProjectCard = ({ project, index, onOpen }) => {
   );
 };
 
+// ─── Projects Section ────────────────────────────────────────────────────────
 const ProjectsSection = () => {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [activeTab, setActiveTab] = useState('all'); // 'all' | 'pinned' | 'ongoing' | 'completed'
+  const { data } = usePortfolio();
+  const projects = data.projects || [];
+
+  const pinnedCount = projects.filter((p) => p.isPinned).length;
+  const ongoingCount = projects.filter((p) => p.status === 'ongoing').length;
+  const completedCount = projects.filter((p) => p.status === 'completed').length;
+
+  const filteredProjects = projects.filter((p) => {
+    if (activeTab === 'pinned') return !!p.isPinned;
+    if (activeTab === 'ongoing') return p.status === 'ongoing';
+    if (activeTab === 'completed') return p.status === 'completed';
+    return true;
+  });
+
   return (
     <section id="projects" className="projects-section">
       <div className="container">
-        <motion.div className="section-header">
-          <h2 className="section-title">Featured <span className="text-secondary">Projects</span></h2>
+        <motion.div
+          className="section-header"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="section-title">
+            Featured <span className="text-secondary">Projects</span>
+          </h2>
+          <p className="section-lead" style={{ textAlign: 'center', marginTop: '0.4rem', color: '#94a3b8' }}>
+            Showcasing production apps, ongoing systems, and client solutions.
+          </p>
         </motion.div>
 
+        {/* Filter Navigation Tabs */}
+        <div className="project-filter-tabs">
+          <button
+            type="button"
+            className={`project-tab-btn ${activeTab === 'all' ? 'active' : ''}`}
+            onClick={() => setActiveTab('all')}
+          >
+            All Work ({projects.length})
+          </button>
+          {pinnedCount > 0 && (
+            <button
+              type="button"
+              className={`project-tab-btn ${activeTab === 'pinned' ? 'active' : ''}`}
+              onClick={() => setActiveTab('pinned')}
+            >
+              📌 Pinned Highlights ({pinnedCount})
+            </button>
+          )}
+          {ongoingCount > 0 && (
+            <button
+              type="button"
+              className={`project-tab-btn ${activeTab === 'ongoing' ? 'active' : ''}`}
+              onClick={() => setActiveTab('ongoing')}
+            >
+              ⚡ Ongoing Builds ({ongoingCount})
+            </button>
+          )}
+          <button
+            type="button"
+            className={`project-tab-btn ${activeTab === 'completed' ? 'active' : ''}`}
+            onClick={() => setActiveTab('completed')}
+          >
+            ✅ Completed ({completedCount})
+          </button>
+        </div>
+
         <div className="projects-grid">
-          {PROJECTS_DATA.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} onOpen={setSelectedProject} />
+          {filteredProjects.map((project, index) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              index={index}
+              onOpen={setSelectedProject}
+            />
           ))}
         </div>
       </div>
@@ -927,7 +945,11 @@ const ProjectsSection = () => {
   );
 };
 
+// ─── Certificates Section ────────────────────────────────────────────────────
 const CertificatesSection = () => {
+  const { data } = usePortfolio();
+  const certificates = data.certificates || [];
+
   return (
     <section id="certificates" className="certificates-section">
       <div className="container">
@@ -938,7 +960,9 @@ const CertificatesSection = () => {
           viewport={{ once: true }}
         >
           <h3 className="section-subtitle">Credentials</h3>
-          <h2 className="section-title">My <span className="text-primary">Certificates</span></h2>
+          <h2 className="section-title">
+            My <span className="text-primary">Certificates</span>
+          </h2>
           <p className="section-lead">Verified certifications in software development and computer science.</p>
         </motion.div>
 
@@ -949,52 +973,60 @@ const CertificatesSection = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
         >
-          {CERTIFICATES_DATA.map((cert) => (
-            <motion.a
-              key={cert.id}
-              href={cert.credentialUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cert-card glass-panel interactive"
-              variants={VARIANTS.fadeInUp}
-              whileHover={{ y: -8, borderColor: cert.color }}
-              style={{ '--cert-color': cert.color }}
-            >
-              <div className="cert-badge" style={{ background: `${cert.color}22`, color: cert.color }}>
-                {cert.badge.startsWith('/') ? (
-                  <img src={cert.badge} alt={cert.issuer} className="cert-badge-img" />
-                ) : (
-                  <span className="cert-badge-icon">{cert.badge}</span>
-                )}
-              </div>
-              <div className="cert-body">
-                <span className="cert-issuer">{cert.issuer}</span>
-                <h3 className="cert-title">{cert.title}</h3>
-                <div className="cert-footer">
-                  <span className="cert-date">📅 {cert.date}</span>
-                  <span className="cert-verify">View Credential ↗</span>
+          {certificates.map((cert) => {
+            const isImageBadge =
+              cert.badge &&
+              (cert.badge.startsWith('/') ||
+                cert.badge.startsWith('data:') ||
+                cert.badge.startsWith('http'));
+
+            return (
+              <motion.a
+                key={cert.id}
+                href={cert.credentialUrl && cert.credentialUrl !== '#' ? cert.credentialUrl : undefined}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cert-card glass-panel interactive"
+                variants={VARIANTS.fadeInUp}
+                whileHover={{ y: -8, borderColor: cert.color }}
+                style={{ '--cert-color': cert.color || '#a855f7' }}
+              >
+                <div
+                  className="cert-badge"
+                  style={{ background: `${cert.color || '#a855f7'}22`, color: cert.color || '#a855f7' }}
+                >
+                  {isImageBadge ? (
+                    <img src={cert.badge} alt={cert.issuer} className="cert-badge-img" />
+                  ) : (
+                    <span className="cert-badge-icon">{cert.badge || '🎓'}</span>
+                  )}
                 </div>
-              </div>
-              <div className="cert-glow" style={{ background: `radial-gradient(circle at 50% 0%, ${cert.color}33, transparent 70%)` }} />
-            </motion.a>
-          ))}
+                <div className="cert-body">
+                  <span className="cert-issuer">{cert.issuer}</span>
+                  <h3 className="cert-title">{cert.title}</h3>
+                  <div className="cert-footer">
+                    <span className="cert-date">📅 {cert.date}</span>
+                    <span className="cert-verify">
+                      {cert.credentialUrl && cert.credentialUrl !== '#' ? 'View Credential ↗' : 'Verified'}
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className="cert-glow"
+                  style={{
+                    background: `radial-gradient(circle at 50% 0%, ${cert.color || '#a855f7'}33, transparent 70%)`
+                  }}
+                />
+              </motion.a>
+            );
+          })}
         </motion.div>
       </div>
     </section>
   );
 };
 
-// ─── EmailJS Configuration ────────────────────────────────────────────────
-// Replace the three placeholders below with your real EmailJS credentials:
-//   1. Go to https://www.emailjs.com/ and create a free account
-//   2. Add an Email Service  → copy the Service ID
-//   3. Create an Email Template → copy the Template ID
-//      Template variables to use: {{from_name}}, {{from_email}}, {{subject}}, {{message}}
-//   4. Go to Account → API Keys → copy the Public Key
-const EMAILJS_SERVICE_ID = 'service_beniihq';
-const EMAILJS_TEMPLATE_ID = 'template_ndkel7c';
-const EMAILJS_PUBLIC_KEY = 'tD1XU03PmDdGKFaHO';
-
+// ─── Contact Toast ───────────────────────────────────────────────────────────
 const Toast = ({ toast, onDismiss }) => (
   <AnimatePresence>
     {toast && (
@@ -1007,13 +1039,24 @@ const Toast = ({ toast, onDismiss }) => (
       >
         <span>{toast.type === 'success' ? '✅' : '❌'}</span>
         <span>{toast.message}</span>
-        <button className="toast-close" onClick={onDismiss}>×</button>
+        <button className="toast-close" onClick={onDismiss}>
+          ×
+        </button>
       </motion.div>
     )}
   </AnimatePresence>
 );
 
+// ─── Contact Section ─────────────────────────────────────────────────────────
 const ContactSection = () => {
+  const { data } = usePortfolio();
+  const contact = data.contact || {};
+  const emailjsConfig = contact.emailjs || {
+    serviceId: 'service_beniihq',
+    templateId: 'template_ndkel7c',
+    publicKey: 'tD1XU03PmDdGKFaHO'
+  };
+
   const formRef = useRef(null);
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [sending, setSending] = useState(false);
@@ -1038,15 +1081,15 @@ const ContactSection = () => {
     setSending(true);
     try {
       await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
+        emailjsConfig.serviceId,
+        emailjsConfig.templateId,
         {
           from_name: form.name,
           from_email: form.email,
           subject: form.subject || 'No Subject',
-          message: form.message,
+          message: form.message
         },
-        EMAILJS_PUBLIC_KEY
+        emailjsConfig.publicKey
       );
       showToast('success', "Message sent! I'll get back to you soon 🚀");
       setForm({ name: '', email: '', subject: '', message: '' });
@@ -1057,6 +1100,8 @@ const ContactSection = () => {
       setSending(false);
     }
   };
+
+  const socials = data.hero?.socials || [];
 
   return (
     <section id="contact" className="contact-section">
@@ -1072,14 +1117,18 @@ const ContactSection = () => {
           viewport={{ once: true }}
         >
           <div className="contact-header">
-            <h2 className="section-title">Let's Start a <span className="text-primary">Conversation</span></h2>
-            <p>Have a project in mind or just want to say hi? My inbox is always open.</p>
+            <h2 className="section-title">
+              Let's Start a <span className="text-primary">Conversation</span>
+            </h2>
+            <p>{contact.subheading || 'Have a project in mind or just want to say hi? My inbox is always open.'}</p>
           </div>
 
           <form ref={formRef} className="contact-form" onSubmit={handleSubmit} noValidate>
             <div className="form-row">
               <div className="input-group">
-                <label htmlFor="contact-name">Your Name <span className="required">*</span></label>
+                <label htmlFor="contact-name">
+                  Your Name <span className="required">*</span>
+                </label>
                 <input
                   id="contact-name"
                   type="text"
@@ -1092,7 +1141,9 @@ const ContactSection = () => {
                 />
               </div>
               <div className="input-group">
-                <label htmlFor="contact-email">Your Email <span className="required">*</span></label>
+                <label htmlFor="contact-email">
+                  Your Email <span className="required">*</span>
+                </label>
                 <input
                   id="contact-email"
                   type="email"
@@ -1120,7 +1171,9 @@ const ContactSection = () => {
             </div>
 
             <div className="input-group">
-              <label htmlFor="contact-message">Message <span className="required">*</span></label>
+              <label htmlFor="contact-message">
+                Message <span className="required">*</span>
+              </label>
               <textarea
                 id="contact-message"
                 name="message"
@@ -1141,30 +1194,50 @@ const ContactSection = () => {
               disabled={sending}
             >
               {sending ? (
-                <><span className="spinner"></span> Sending...</>
+                <>
+                  <span className="spinner"></span> Sending...
+                </>
               ) : (
-                <>Send Message <FaPaperPlane /></>
+                <>
+                  Send Message <FaPaperPlane />
+                </>
               )}
             </motion.button>
           </form>
 
-          <div className="contact-socials">
-            <p>Or connect via social media:</p>
-            <div className="social-icons-row">
-              {HERO_DATA.socials.map((social, i) => (
-                <a key={i} href={social.url} className="social-icon-link interactive">
-                  <social.icon />
-                </a>
-              ))}
+          {socials.length > 0 && (
+            <div className="contact-socials">
+              <p>Or connect via social media:</p>
+              <div className="social-icons-row">
+                {socials.map((social, i) => {
+                  const Icon = getSocialIcon(social.id);
+                  return (
+                    <a
+                      key={i}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="social-icon-link interactive"
+                      title={social.label}
+                    >
+                      <Icon />
+                    </a>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
         </motion.div>
       </div>
     </section>
   );
 };
 
-const Footer = () => {
+// ─── Footer ──────────────────────────────────────────────────────────────────
+const Footer = ({ onSecretTrigger }) => {
+  const { data } = usePortfolio();
+  const name = data.hero?.name || 'Ganindu Pabasara Wickramasinghe';
+
   return (
     <footer className="footer">
       <div className="container footer-content">
@@ -1175,26 +1248,43 @@ const Footer = () => {
         <div className="footer-col">
           <h4>Navigation</h4>
           <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
+            <li>
+              <a href="#home">Home</a>
+            </li>
+            <li>
+              <a href="#about">About</a>
+            </li>
+            <li>
+              <a href="#projects">Projects</a>
+            </li>
+            <li>
+              <a href="#certificates">Certificates</a>
+            </li>
           </ul>
         </div>
         <div className="footer-col">
-          <h4>Legal</h4>
+          <h4>Engineering</h4>
           <ul>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
+            <li>Full Stack Development</li>
+            <li>IoT & Hardware Integration</li>
+            <li>Scalable Cloud Systems</li>
           </ul>
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Ganindu Pabasara Wickramasinghe. All rights reserved.</p>
+        <p
+          onDoubleClick={onSecretTrigger}
+          title=""
+          style={{ userSelect: 'none', cursor: 'default' }}
+        >
+          &copy; {new Date().getFullYear()} {name}. All rights reserved.
+        </p>
       </div>
     </footer>
   );
 };
 
+// ─── Scroll to Top ───────────────────────────────────────────────────────────
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -1206,12 +1296,12 @@ const ScrollToTop = () => {
         setIsVisible(false);
       }
     };
-    window.addEventListener("scroll", toggleVisibility);
-    return () => window.removeEventListener("scroll", toggleVisibility);
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -1237,13 +1327,52 @@ const ScrollToTop = () => {
 // ==========================================
 
 function App() {
+  const { data, currentView, setCurrentView, isAdminAuthenticated } = usePortfolio();
   const [loading, setLoading] = useState(true);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
+
+  const handleOpenAdmin = () => {
+    if (isAdminAuthenticated || data.adminSettings?.allowAutoLogin) {
+      setCurrentView('admin');
+    } else {
+      setShowAuthModal(true);
+    }
+  };
+
+  // Stealth Global Hotkey Listener: Ctrl + Shift + A OR Alt + A
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (
+        (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) ||
+        (e.altKey && (e.key === 'A' || e.key === 'a'))
+      ) {
+        e.preventDefault();
+        handleOpenAdmin();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAdminAuthenticated, data.adminSettings]);
+
+  // If currently in Admin view, render AdminDashboard or Auth Gate
+  if (currentView === 'admin') {
+    if (isAdminAuthenticated || data.adminSettings?.allowAutoLogin) {
+      return <AdminDashboard />;
+    } else {
+      return (
+        <div className="admin-viewport">
+          <AdminAuthModal isOpen={true} onClose={() => setCurrentView('portfolio')} />
+        </div>
+      );
+    }
+  }
 
   return (
     <div className="app-wrapper">
@@ -1257,18 +1386,13 @@ function App() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
+            <motion.div className="scroll-progress-bar" style={{ scaleX }} />
 
-            <motion.div
-              className="scroll-progress-bar"
-              style={{ scaleX }}
-            />
-
-            {/* Background Particles/Stars would be handled via CSS or a separate Canvas component */}
             <div className="stars-bg"></div>
             <div className="stars-bg-2"></div>
             <div className="stars-bg-3"></div>
 
-            <Navbar />
+            <Navbar onOpenAdmin={handleOpenAdmin} />
 
             <main>
               <HeroSection />
@@ -1279,8 +1403,14 @@ function App() {
               <ContactSection />
             </main>
 
-            <Footer />
+            <Footer onSecretTrigger={handleOpenAdmin} />
             <ScrollToTop />
+
+            {/* Admin Password Modal (only opens on secret triggers) */}
+            <AdminAuthModal
+              isOpen={showAuthModal}
+              onClose={() => setShowAuthModal(false)}
+            />
           </motion.div>
         )}
       </AnimatePresence>
