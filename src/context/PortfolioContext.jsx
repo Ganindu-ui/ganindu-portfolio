@@ -3,6 +3,24 @@ import { DEFAULT_PORTFOLIO_DATA } from '../data/defaultData';
 
 const LOCAL_STORAGE_KEY = 'ganindu_portfolio_data_v2';
 const AUTH_KEY = 'ganindu_portfolio_admin_auth';
+const DELETED_DEFAULTS_KEY = 'ganindu_portfolio_deleted_default_projects';
+
+// Keep the visitor's saved projects, but surface default projects that were
+// added to defaultData.js after their last save (e.g. new portfolio entries),
+// unless the visitor explicitly deleted that default project.
+const mergeSavedProjects = (savedProjects) => {
+  let deletedDefaultIds = [];
+  try {
+    deletedDefaultIds = JSON.parse(localStorage.getItem(DELETED_DEFAULTS_KEY) || '[]');
+  } catch {
+    deletedDefaultIds = [];
+  }
+  const savedIds = new Set(savedProjects.map((p) => p.id));
+  const missingDefaults = DEFAULT_PORTFOLIO_DATA.projects.filter(
+    (d) => !savedIds.has(d.id) && !deletedDefaultIds.includes(d.id)
+  );
+  return missingDefaults.length > 0 ? [...savedProjects, ...missingDefaults] : savedProjects;
+};
 
 const PortfolioContext = createContext(null);
 
@@ -21,7 +39,7 @@ export const PortfolioProvider = ({ children }) => {
           about: { ...DEFAULT_PORTFOLIO_DATA.about, ...(parsed.about || {}) },
           contact: { ...DEFAULT_PORTFOLIO_DATA.contact, ...(parsed.contact || {}) },
           adminSettings: { ...DEFAULT_PORTFOLIO_DATA.adminSettings, ...(parsed.adminSettings || {}) },
-          projects: parsed.projects || DEFAULT_PORTFOLIO_DATA.projects,
+          projects: parsed.projects ? mergeSavedProjects(parsed.projects) : DEFAULT_PORTFOLIO_DATA.projects,
           certificates: parsed.certificates || DEFAULT_PORTFOLIO_DATA.certificates,
           skills: parsed.skills || DEFAULT_PORTFOLIO_DATA.skills
         };
@@ -173,6 +191,17 @@ export const PortfolioProvider = ({ children }) => {
       ...prev,
       projects: prev.projects.filter((p) => p.id !== id)
     }));
+    // Remember deletions of default projects so mergeSavedProjects does not
+    // resurrect them on the next load.
+    if (DEFAULT_PORTFOLIO_DATA.projects.some((d) => d.id === id)) {
+      try {
+        const deleted = JSON.parse(localStorage.getItem(DELETED_DEFAULTS_KEY) || '[]');
+        if (!deleted.includes(id)) {
+          deleted.push(id);
+          localStorage.setItem(DELETED_DEFAULTS_KEY, JSON.stringify(deleted));
+        }
+      } catch {}
+    }
   };
 
   const togglePinProject = (id) => {
@@ -317,6 +346,7 @@ export const PortfolioProvider = ({ children }) => {
   const resetToDefaults = () => {
     setData(DEFAULT_PORTFOLIO_DATA);
     localStorage.removeItem(LOCAL_STORAGE_KEY);
+    localStorage.removeItem(DELETED_DEFAULTS_KEY);
   };
 
   return (
