@@ -157,6 +157,17 @@ const PROJECTS_DATA = [
     repo: "#"
   },
 
+  {
+    id: 6,
+    title: "Success Club Booking System",
+    date: "Sept 2026",
+    images: ["/images/booking_system_1.png", "/images/booking_system_2.png"],
+    desc: "A production-grade consultation booking platform built for Dr. Malalasekera (Success Club), embedded into the clinic's WordPress website. Guides clients through a 5-step flow — service selection, real-time availability, intake details, PayHere payment and confirmation — with automated Email/WhatsApp/SMS notifications, two-way Google Calendar sync, and a secure admin dashboard for managing services, availability, bookings and payments.",
+    tags: ["React", "Node.js", "TypeScript", "Express", "Prisma", "MySQL", "PayHere", "Google Calendar API", "Twilio", "Tailwind"],
+    link: "#",
+    repo: "https://github.com/Ganindu-ui/Dr.-Malalasekera-Bokking-System.git"
+  },
+
 ];
 
 const CERTIFICATES_DATA = [
@@ -619,7 +630,7 @@ const AboutSection = () => {
               <span className="stat-label">Years Experience</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">5+</span>
+              <span className="stat-number">6+</span>
               <span className="stat-label">Projects Completed</span>
             </div>
             <div className="stat-item">
