@@ -133,6 +133,19 @@ export const DEFAULT_PORTFOLIO_DATA = {
       order: 4
     },
     {
+      id: "proj_12",
+      title: "Sapphire Story - Team Build",
+      date: "Oct 2026",
+      images: [],
+      desc: "A group build of The Sapphire Story platform for a Sri Lankan gemstone business — the luxury Next.js storefront and a staff-only React/Redux admin panel for inventory, sales and operations, backed by a Laravel 12 REST API with MySQL. Contributed key UI parts of the storefront and built out admin panel screens, working as part of the eSupport team, shipped through the org repo's GitHub Actions CI/CD deploy pipeline to cPanel.",
+      tags: ["Next.js", "Laravel", "React", "Redux Toolkit", "Tailwind", "GitHub Actions"],
+      link: "#",
+      repo: "https://github.com/eSupportTechnology/Sapphire_Retail.git",
+      status: "completed",
+      isPinned: false,
+      order: 5
+    },
+    {
       id: "proj_10",
       title: "eSupport Digital Marketing Portfolio",
       date: "Sept 2026",
@@ -143,7 +156,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/eSupport-Portfolio.git",
       status: "completed",
       isPinned: false,
-      order: 5
+      order: 6
     },
     {
       id: "proj_6",
@@ -156,7 +169,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/Dr.-Malalasekera-Bokking-System.git",
       status: "completed",
       isPinned: true,
-      order: 6
+      order: 7
     },
     {
       id: "proj_7",
@@ -169,7 +182,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/CeyBlu-Gem-Site.git",
       status: "completed",
       isPinned: false,
-      order: 7
+      order: 8
     },
     {
       id: "proj_8",
@@ -182,7 +195,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/Geethlanka-Booking-System.git",
       status: "completed",
       isPinned: false,
-      order: 8
+      order: 9
     },
     {
       id: "proj_3",
@@ -195,7 +208,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/ganindu-portfolio.git",
       status: "completed",
       isPinned: false,
-      order: 9
+      order: 10
     },
     {
       id: "proj_4",
@@ -208,7 +221,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/Python-based-traffic-data-analysis-system.git",
       status: "completed",
       isPinned: false,
-      order: 10
+      order: 11
     },
     {
       id: "proj_5",
@@ -221,7 +234,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "#",
       status: "completed",
       isPinned: false,
-      order: 11
+      order: 12
     }
   ],
   certificates: [
