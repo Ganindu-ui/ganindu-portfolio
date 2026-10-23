@@ -107,6 +107,45 @@ export const DEFAULT_PORTFOLIO_DATA = {
       order: 2
     },
     {
+      id: "proj_9",
+      title: "NexaBot",
+      date: "Oct 2026",
+      images: [],
+      desc: "A multi-tenant AI chatbot SaaS with an integrated RAG system. Businesses create bots and attach knowledge bases fed by manual FAQ entries and uploaded documents; an ingestion pipeline (extract → clean → chunk → embed → store) indexes them into PostgreSQL pgvector, and tenant-safe retrieval with a confidence gate and conversation memory grounds every answer. A NestJS/Fastify API on PostgreSQL 16 + Redis with strict tenant isolation (signed tenant scope + RLS), a provider abstraction letting Gemini or Anthropic power chat without the AI key ever leaving the server, and origin-bound public chat auth for embeddable widgets. Core chat + RAG runtime is live; admin panel, billing and the embeddable widget bundle are next.",
+      tags: ["TypeScript", "Node.js", "NestJS", "PostgreSQL", "pgvector", "Redis", "RAG", "Gemini", "Anthropic"],
+      link: "#",
+      repo: "https://github.com/Ganindu-ui/NexaBot.git",
+      status: "ongoing",
+      isPinned: false,
+      order: 3
+    },
+    {
+      id: "proj_11",
+      title: "Sunworth Solar E-Commerce",
+      date: "Oct 2026",
+      images: [],
+      desc: "A mobile-responsive full-stack e-commerce web application and certified solar hardware store for Sunworth Solar Engineering (client: Mr. Janaka Madawa Thilakarathne). Includes a modular landing page, shop with touch-friendly cart drawer and mobile checkout, project showcase, and lead-capture contact flow, backed by an admin CMS for products, projects, leads, content and media uploads. React 19 + Tailwind v4 frontend with a Node/Express + SQLite API secured by JWT auth. UI approved by the client — development and feature build-out ongoing.",
+      tags: ["React", "TypeScript", "Vite", "Tailwind", "Framer Motion", "Node.js", "Express", "SQLite", "JWT"],
+      link: "#",
+      repo: "https://github.com/Ganindu-ui/solar-system-website.git",
+      status: "ongoing",
+      isPinned: false,
+      order: 4
+    },
+    {
+      id: "proj_10",
+      title: "eSupport Digital Marketing Portfolio",
+      date: "Sept 2026",
+      images: [],
+      desc: "A completed corporate portfolio website for eSupport Technologies, a Colombo-based full-service digital marketing and web development agency. Presents the agency's services (web development, SEO, ERP systems, digital marketing), key stats (150+ projects, 45+ brands, 300+ campaigns), its working approach, team and brand models, plus a call-to-action flow. Built as a polished marketing site with animated sections and interactive stat visuals.",
+      tags: ["React", "TypeScript", "Vite", "Tailwind", "Framer Motion", "Recharts"],
+      link: "#",
+      repo: "https://github.com/Ganindu-ui/eSupport-Portfolio.git",
+      status: "completed",
+      isPinned: false,
+      order: 5
+    },
+    {
       id: "proj_6",
       title: "Success Club Booking System",
       date: "Sept 2026",
@@ -117,7 +156,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/Dr.-Malalasekera-Bokking-System.git",
       status: "completed",
       isPinned: true,
-      order: 3
+      order: 6
     },
     {
       id: "proj_7",
@@ -130,7 +169,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/CeyBlu-Gem-Site.git",
       status: "completed",
       isPinned: false,
-      order: 4
+      order: 7
     },
     {
       id: "proj_8",
@@ -143,7 +182,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/Geethlanka-Booking-System.git",
       status: "completed",
       isPinned: false,
-      order: 5
+      order: 8
     },
     {
       id: "proj_3",
@@ -156,7 +195,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/ganindu-portfolio.git",
       status: "completed",
       isPinned: false,
-      order: 6
+      order: 9
     },
     {
       id: "proj_4",
@@ -169,7 +208,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/Python-based-traffic-data-analysis-system.git",
       status: "completed",
       isPinned: false,
-      order: 7
+      order: 10
     },
     {
       id: "proj_5",
@@ -182,7 +221,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "#",
       status: "completed",
       isPinned: false,
-      order: 8
+      order: 11
     }
   ],
   certificates: [
