@@ -107,6 +107,19 @@ export const DEFAULT_PORTFOLIO_DATA = {
       order: 2
     },
     {
+      id: "proj_13",
+      title: "Hotel Management System - Nuwara Eliya",
+      date: "Oct 2026",
+      images: [],
+      desc: "A complete hotel management platform built as an eSupport group project, covering rooms and cottages, reservations with online booking, food ordering, housekeeping, laundry, maintenance, employee attendance and payroll, and an accounting automation engine that syncs ledger entries in real time (trial balance, balance sheet, income statement, cash flow). I owned the user management system end to end: account CRUD, role management across six roles (admin, manager, reception, kitchen, staff, user), area-scoped permissions, and profile/password flows.",
+      tags: ["Laravel", "PHP", "MySQL", "Blade", "Tailwind"],
+      link: "#",
+      repo: "https://github.com/eSupportTechnology/Hotel-Nuwaraeliya.git",
+      status: "completed",
+      isPinned: false,
+      order: 3
+    },
+    {
       id: "proj_9",
       title: "NexaBot",
       date: "Oct 2026",
@@ -117,7 +130,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/NexaBot.git",
       status: "ongoing",
       isPinned: false,
-      order: 3
+      order: 4
     },
     {
       id: "proj_11",
@@ -130,7 +143,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/solar-system-website.git",
       status: "ongoing",
       isPinned: false,
-      order: 4
+      order: 5
     },
     {
       id: "proj_12",
@@ -143,7 +156,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/eSupportTechnology/Sapphire_Retail.git",
       status: "completed",
       isPinned: false,
-      order: 5
+      order: 6
     },
     {
       id: "proj_10",
@@ -156,7 +169,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/eSupport-Portfolio.git",
       status: "completed",
       isPinned: false,
-      order: 6
+      order: 7
     },
     {
       id: "proj_6",
@@ -169,7 +182,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/Dr.-Malalasekera-Bokking-System.git",
       status: "completed",
       isPinned: true,
-      order: 7
+      order: 8
     },
     {
       id: "proj_7",
@@ -182,7 +195,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/CeyBlu-Gem-Site.git",
       status: "completed",
       isPinned: false,
-      order: 8
+      order: 9
     },
     {
       id: "proj_8",
@@ -195,7 +208,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/Geethlanka-Booking-System.git",
       status: "completed",
       isPinned: false,
-      order: 9
+      order: 10
     },
     {
       id: "proj_3",
@@ -208,7 +221,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/ganindu-portfolio.git",
       status: "completed",
       isPinned: false,
-      order: 10
+      order: 11
     },
     {
       id: "proj_4",
@@ -221,7 +234,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "https://github.com/Ganindu-ui/Python-based-traffic-data-analysis-system.git",
       status: "completed",
       isPinned: false,
-      order: 11
+      order: 12
     },
     {
       id: "proj_5",
@@ -234,7 +247,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
       repo: "#",
       status: "completed",
       isPinned: false,
-      order: 12
+      order: 13
     }
   ],
   certificates: [
