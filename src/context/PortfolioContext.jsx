@@ -19,7 +19,14 @@ const mergeSavedProjects = (savedProjects) => {
   const missingDefaults = DEFAULT_PORTFOLIO_DATA.projects.filter(
     (d) => !savedIds.has(d.id) && !deletedDefaultIds.includes(d.id)
   );
-  return missingDefaults.length > 0 ? [...savedProjects, ...missingDefaults] : savedProjects;
+  if (missingDefaults.length === 0) return savedProjects;
+  // Interleave the missing defaults where their `order` from defaultData.js
+  // says they belong, so newly added entries appear in the position the data
+  // file placed them (e.g. right after the pinned group) instead of at the end.
+  const merged = savedProjects.map((p, i) => ({ sortKey: i, item: { ...p, order: p.order ?? i + 1 } }));
+  missingDefaults.forEach((d) => merged.push({ sortKey: savedProjects.length + 1e9, item: { ...d } }));
+  merged.sort((a, b) => (a.item.order - b.item.order) || (a.sortKey - b.sortKey));
+  return merged.map(({ item }, idx) => ({ ...item, order: idx + 1 }));
 };
 
 const PortfolioContext = createContext(null);
