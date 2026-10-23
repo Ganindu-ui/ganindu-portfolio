@@ -168,6 +168,17 @@ const PROJECTS_DATA = [
     repo: "https://github.com/Ganindu-ui/Dr.-Malalasekera-Bokking-System.git"
   },
 
+  {
+    id: 7,
+    title: "The Sapphire Story",
+    date: "Sept 2026",
+    images: ["/images/ceyblu_web.png", "/images/ceyblu_gems.png"],
+    desc: "A complete e-commerce platform for a Sri Lankan sapphire and gemstone business, built in two weeks with client-approved UI. Next.js luxury storefront (catalog with filtering, cart & checkout, custom gem inquiries, wishlist, order tracking) backed by a Laravel 12 REST API with Sanctum auth and MySQL, plus a staff-only React/Redux ERP covering inventory, sales, HR, finance and reports with QR/barcode scanning, PDF invoicing and Excel exports — all shipped through GitHub Actions CI/CD to cPanel.",
+    tags: ["Next.js", "Laravel", "React", "TypeScript", "MySQL", "Redux Toolkit", "Tailwind", "Sanctum", "GitHub Actions"],
+    link: "https://thesapphirestory.com",
+    repo: "https://github.com/Ganindu-ui/CeyBlu-Gem-Site.git"
+  },
+
 ];
 
 const CERTIFICATES_DATA = [
@@ -630,7 +641,7 @@ const AboutSection = () => {
               <span className="stat-label">Years Experience</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">6+</span>
+              <span className="stat-number">7+</span>
               <span className="stat-label">Projects Completed</span>
             </div>
             <div className="stat-item">
