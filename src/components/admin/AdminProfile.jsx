@@ -213,6 +213,17 @@ export const AdminProfile = () => {
           />
         </div>
 
+        {/* Hero Avatar Image Dropzone */}
+        <div style={{ marginTop: '1.2rem' }}>
+          <ImagePasteDropzone
+            images={heroForm.avatar}
+            multiple={false}
+            label="Hero Section Avatar / Image"
+            helperText="Customize the hero image or illustration. Defaults to /images/developer.png or your photo"
+            onChange={(newImg) => setHeroForm({ ...heroForm, avatar: newImg })}
+          />
+        </div>
+
         {/* Tech Stack Pills Manager */}
         <div className="form-group-item" style={{ marginTop: '1.2rem' }}>
           <label className="admin-label">Hero Tech Stack Pills</label>

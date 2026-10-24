@@ -18,7 +18,10 @@ export const AdminSettings = () => {
     updateAdminSettings,
     exportData,
     importData,
-    resetToDefaults
+    resetToDefaults,
+    canSaveToDisk,
+    diskSaveStatus,
+    saveToDisk
   } = usePortfolio();
 
   const [pin, setPin] = useState(data.adminSettings?.pin || '1234');
@@ -30,6 +33,21 @@ export const AdminSettings = () => {
   const notify = (msg, type = 'success') => {
     setFeedbackMsg({ msg, type });
     setTimeout(() => setFeedbackMsg(null), 4000);
+  };
+
+  const handleCopyCode = () => {
+    const code = `export const DEFAULT_PORTFOLIO_DATA = ${JSON.stringify(data, null, 2)};\n`;
+    navigator.clipboard.writeText(code);
+    notify('Copied defaultData.js code to clipboard!');
+  };
+
+  const handleSaveToCode = async () => {
+    const res = await saveToDisk();
+    if (res.success) {
+      notify('Saved changes directly to src/data/defaultData.js on disk! 🎉');
+    } else {
+      notify(`Could not save to disk: ${res.message || 'Error'}`, 'error');
+    }
   };
 
   const handleSaveSecurity = (e) => {
@@ -133,6 +151,45 @@ export const AdminSettings = () => {
             <span className="stat-big-num">PIN Protected</span>
             <span className="stat-subtext">Passcode: {data.adminSettings?.pin || '1234'}</span>
           </div>
+        </div>
+      </div>
+
+      {/* Multi-Device Sync & Permanent Deployment */}
+      <div className="admin-glass-card" style={{ borderColor: canSaveToDisk ? 'rgba(16, 185, 129, 0.4)' : 'rgba(245, 158, 11, 0.3)' }}>
+        <h3 style={{ color: '#fff', fontSize: '1.25rem', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <FaDatabase /> Multi-Device Sync & Deployment
+        </h3>
+        <p style={{ color: '#cbd5e1', fontSize: '0.92rem', marginBottom: '1.2rem', lineHeight: '1.5' }}>
+          {canSaveToDisk ? (
+            <span>
+              <strong style={{ color: '#34d399' }}>✓ Connected to Dev Server:</strong> Changes are auto-saved directly into{' '}
+              <code style={{ background: 'rgba(0,0,0,0.3)', padding: '0.2rem 0.4rem', borderRadius: '4px', color: '#67e8f9' }}>
+                src/data/defaultData.js
+              </code>{' '}
+              on your computer. To make changes show on your phone and other devices, simply commit and push your code to Git (
+              <code style={{ background: 'rgba(0,0,0,0.3)', padding: '0.2rem 0.4rem', borderRadius: '4px', color: '#f472b6' }}>
+                git push
+              </code>
+              ). Vercel will deploy it everywhere!
+            </span>
+          ) : (
+            <span>
+              <strong style={{ color: '#fbbf24' }}>ℹ️ Local Storage Mode:</strong> You are currently viewing a static build or on another device. Changes made here stay inside this browser. To sync changes across all devices, copy the data code below, paste it into{' '}
+              <code>src/data/defaultData.js</code>, and push to GitHub.
+            </span>
+          )}
+        </p>
+
+        <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
+          {canSaveToDisk && (
+            <button className="admin-btn admin-btn-primary" onClick={handleSaveToCode}>
+              <FaSave /> {diskSaveStatus === 'saving' ? 'Saving to Code...' : 'Save Directly to defaultData.js'}
+            </button>
+          )}
+
+          <button className="admin-btn admin-btn-secondary" onClick={handleCopyCode}>
+            <FaDownload /> Copy Code for defaultData.js
+          </button>
         </div>
       </div>
 

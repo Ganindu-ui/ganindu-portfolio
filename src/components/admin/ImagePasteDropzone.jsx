@@ -40,7 +40,26 @@ export const ImagePasteDropzone = ({
     try {
       const processedList = [];
       for (const file of validFiles) {
-        const compressed = await processAndCompressImage(file);
+        let compressed = await processAndCompressImage(file);
+        // Try saving directly to dev server public/images folder if dev server endpoint available
+        try {
+          const saveRes = await fetch('/api/save-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              dataUrl: compressed,
+              filename: file.name ? file.name.replace(/\.[^/.]+$/, '') : `img_${Date.now()}`
+            })
+          });
+          if (saveRes.ok) {
+            const result = await saveRes.json();
+            if (result.url) {
+              compressed = result.url;
+            }
+          }
+        } catch {
+          // fallback to compressed data URL
+        }
         processedList.push(compressed);
       }
 

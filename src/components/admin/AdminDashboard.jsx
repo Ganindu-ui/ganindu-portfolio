@@ -24,7 +24,7 @@ import { AdminSettings } from './AdminSettings';
 import './admin.css';
 
 export const AdminDashboard = () => {
-  const { data, setCurrentView, logoutAdmin, exportData } = usePortfolio();
+  const { data, setCurrentView, logoutAdmin, exportData, canSaveToDisk, diskSaveStatus, saveToDisk } = usePortfolio();
   const [activeTab, setActiveTab] = useState('projects'); // 'overview' | 'projects' | 'certificates' | 'skills' | 'profile' | 'settings'
 
   const projects = data.projects || [];
@@ -50,10 +50,34 @@ export const AdminDashboard = () => {
         </div>
 
         <div className="admin-nav-actions">
-          <div className="status-indicator">
-            <span className="status-dot-pulse" />
-            <span>Live Sync Active</span>
+          <div
+            className="status-indicator"
+            title={canSaveToDisk ? "Auto-saving to src/data/defaultData.js on your computer" : "Saved in browser LocalStorage. Push code to Git for multi-device sync."}
+          >
+            <span
+              className="status-dot-pulse"
+              style={{
+                backgroundColor: canSaveToDisk ? '#10b981' : '#f59e0b',
+                boxShadow: canSaveToDisk ? '0 0 8px #10b981' : '0 0 8px #f59e0b'
+              }}
+            />
+            <span style={{ color: canSaveToDisk ? '#a7f3d0' : '#fde68a' }}>
+              {canSaveToDisk
+                ? (diskSaveStatus === 'saving' ? 'Saving to Code...' : (diskSaveStatus === 'saved' ? 'Saved to Code ✓' : 'Disk Sync: Active'))
+                : 'Device LocalStorage'}
+            </span>
           </div>
+
+          {canSaveToDisk && (
+            <button
+              type="button"
+              className="admin-btn admin-btn-primary admin-btn-sm"
+              onClick={() => saveToDisk()}
+              title="Save current data directly to src/data/defaultData.js"
+            >
+              Save to Code
+            </button>
+          )}
 
           <button
             type="button"

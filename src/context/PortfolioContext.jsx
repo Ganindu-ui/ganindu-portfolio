@@ -38,7 +38,14 @@ export const PortfolioProvider = ({ children }) => {
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        // Merge with defaults in case new fields were added
+        // If dataVersion has changed in code, refresh base defaults so all devices receive code updates!
+        if (parsed.dataVersion !== DEFAULT_PORTFOLIO_DATA.dataVersion) {
+          return {
+            ...DEFAULT_PORTFOLIO_DATA,
+            projects: parsed.projects ? mergeSavedProjects(parsed.projects) : DEFAULT_PORTFOLIO_DATA.projects,
+            adminSettings: { ...DEFAULT_PORTFOLIO_DATA.adminSettings, ...(parsed.adminSettings || {}) }
+          };
+        }
         return {
           ...DEFAULT_PORTFOLIO_DATA,
           ...parsed,
@@ -56,6 +63,43 @@ export const PortfolioProvider = ({ children }) => {
     }
     return DEFAULT_PORTFOLIO_DATA;
   });
+
+  const [canSaveToDisk, setCanSaveToDisk] = useState(false);
+  const [diskSaveStatus, setDiskSaveStatus] = useState('idle');
+
+  // Check if Vite local dev server endpoint is available
+  useEffect(() => {
+    fetch('/api/dev-status')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((info) => {
+        if (info?.canSaveToDisk) {
+          setCanSaveToDisk(true);
+        }
+      })
+      .catch(() => setCanSaveToDisk(false));
+  }, []);
+
+  const saveToDisk = async (customData) => {
+    const payload = customData || data;
+    setDiskSaveStatus('saving');
+    try {
+      const res = await fetch('/api/save-portfolio-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        setDiskSaveStatus('saved');
+        setTimeout(() => setDiskSaveStatus('idle'), 3000);
+        return { success: true };
+      }
+      setDiskSaveStatus('error');
+      return { success: false, message: 'Server returned error' };
+    } catch (err) {
+      setDiskSaveStatus('error');
+      return { success: false, message: err.message };
+    }
+  };
 
   // Navigation View: 'portfolio' | 'admin'
   const [currentView, setCurrentView] = useState(() => {
@@ -84,7 +128,19 @@ export const PortfolioProvider = ({ children }) => {
     } catch (e) {
       console.error('Failed to save portfolio data to localStorage', e);
     }
-  }, [data]);
+
+    // Auto-save to disk in dev mode
+    if (canSaveToDisk) {
+      const timer = setTimeout(() => {
+        fetch('/api/save-portfolio-data', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        }).catch(() => {});
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [data, canSaveToDisk]);
 
   // Keep URL in sync with view
   useEffect(() => {
@@ -388,7 +444,11 @@ export const PortfolioProvider = ({ children }) => {
         // Data tools
         exportData,
         importData,
-        resetToDefaults
+        resetToDefaults,
+        // Dev server disk sync
+        canSaveToDisk,
+        diskSaveStatus,
+        saveToDisk
       }}
     >
       {children}

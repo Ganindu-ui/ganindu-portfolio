@@ -1,4 +1,5 @@
 export const DEFAULT_PORTFOLIO_DATA = {
+  dataVersion: "2026-10-24_v2",
   hero: {
     greeting: "Hello, I'm",
     name: "Ganindu Pabasara",
@@ -19,7 +20,7 @@ export const DEFAULT_PORTFOLIO_DATA = {
   about: {
     subtitle: "Who I Am",
     title: "Passionate About Technology & Innovation",
-    image: "/images/me.jpg",
+    image: "/images/me.jpg?v=2",
     caption: "Working on the Next Big Thing 🚀",
     desc_1: "I’m Ganindu Pabasara, a tech enthusiast from Sri Lanka with a deep love for creating digital solutions that matter. My journey began with breaking apart electronic toys to see how they worked, which naturally evolved into a career in Full Stack Development and IoT Engineering.",
     desc_2: "I believe that code is more than just syntax; it's a tool to solve real-world problems. Whether I'm optimizing a database query or soldering a sensor to a microcontroller, I bring the same level of dedication and curiosity to every task.",
