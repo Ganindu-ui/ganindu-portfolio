@@ -34,8 +34,12 @@ import {
   FaCertificate,
   FaCog,
   FaLaptopCode,
-  FaTools
+  FaTools,
+  FaReact,
+  FaNodeJs,
+  FaPython
 } from 'react-icons/fa';
+import { SiJavascript, SiTailwindcss, SiFramer, SiThreedotjs, SiMongodb } from 'react-icons/si';
 import './App.css';
 import { usePortfolio } from './context/PortfolioContext';
 import { AdminDashboard } from './components/admin/AdminDashboard';
@@ -89,6 +93,23 @@ const getSocialIcon = (id) => {
     default:
       return FaExternalLinkAlt;
   }
+};
+
+// Helper to map hero tech-stack names to brand icons + brand colors
+const TECH_BRANDS = {
+  react: { Icon: FaReact, color: '#61DAFB' },
+  javascript: { Icon: SiJavascript, color: '#F7DF1E' },
+  'node.js': { Icon: FaNodeJs, color: '#83CD29' },
+  tailwind: { Icon: SiTailwindcss, color: '#38BDF8' },
+  python: { Icon: FaPython, color: '#4B8BBE' },
+  framer: { Icon: SiFramer, color: '#F5F5F5' },
+  'three.js': { Icon: SiThreedotjs, color: '#8FD7FF' },
+  mongodb: { Icon: SiMongodb, color: '#47A248' }
+};
+
+const getTechBrand = (name) => {
+  const brand = TECH_BRANDS[String(name || '').toLowerCase()];
+  return brand || { Icon: FaCode, color: '#a855f7' };
 };
 
 // ==========================================
@@ -443,15 +464,32 @@ const HeroSection = () => {
             <motion.div variants={VARIANTS.fadeInUp} className="tech-stack-row">
               <span className="tech-label">Tech Stack:</span>
               <div className="tech-pills">
-                {hero.tech_stack.map((tech) => (
-                  <motion.span
-                    key={tech}
-                    className="tech-pill"
-                    whileHover={{ y: -5, backgroundColor: 'rgba(168, 85, 247, 0.2)' }}
-                  >
-                    {tech}
-                  </motion.span>
-                ))}
+                {hero.tech_stack.map((tech, i) => {
+                  const { Icon, color } = getTechBrand(tech);
+                  return (
+                    <motion.span
+                      key={tech}
+                      className="tech-pill"
+                      initial={{ opacity: 0, y: 18, scale: 0.6 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ delay: 0.9 + i * 0.07, type: 'spring', stiffness: 280, damping: 18 }}
+                      whileHover={{
+                        y: -6,
+                        scale: 1.08,
+                        boxShadow: '0 10px 25px rgba(168, 85, 247, 0.35)',
+                        borderColor: 'rgba(168, 85, 247, 0.8)',
+                        color: '#ffffff'
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                      style={{ cursor: 'default' }}
+                    >
+                      <span className="tech-pill-icon" style={{ color }}>
+                        <Icon />
+                      </span>
+                      {tech}
+                    </motion.span>
+                  );
+                })}
               </div>
             </motion.div>
           )}
